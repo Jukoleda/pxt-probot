@@ -43,7 +43,7 @@ enum Colores {
 }
 
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['NeoPixel', 'Kitronik','Music']"
+//% groups="['Leds', 'Motores','Buzzer']"
 namespace probot {
 
     export class TiraDeLeds {
@@ -56,20 +56,20 @@ namespace probot {
         _mode: 0;
 
         //%block="%tira_de_leds| mostrar color %rgb=colores_probot"
-        //% group="NeoPixel"
+        //% group="Leds"
         showColor(rgb: number) {
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
             this.mostrar();
         }
         //%block="%tira_de_leds| mostrar"
-        //% group="NeoPixel"
+        //% group="Leds"
         mostrar() {
             ws2812b.sendBuffer(this.buf, this.pin);
         }
 
         //%block="%tira_de_leds| limpiar"
-        //% group="NeoPixel"
+        //% group="Leds"
         limpiar() {
             const stride = 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
@@ -78,7 +78,7 @@ namespace probot {
         //%block="%tira_de_leds|mostrar arcoiris de %startHue|a %endHue"
         //%startHue.defl=1
         //%endHue.defl=300
-        //% group="NeoPixel"
+        //% group="Leds"
         mostrarArcoiris(startHue: number, endHue: number) {
             if (this._length <= 0) return;
 
@@ -205,7 +205,7 @@ namespace probot {
 
     //%block="%col"
     //%blockId="colores_probot"
-    //% group="NeoPixel"
+    //% group="Leds"
     export function colores(col: Colores): number {
         return col;
     }
@@ -214,7 +214,7 @@ namespace probot {
     //%block="probot en puerto %con| de %leds leds"
     //% leds.defl=24
     //%blockSetVariable=tira_de_leds
-    //% group="NeoPixel"
+    //% group="Leds"
     export function crear(con: conn, leds: number): TiraDeLeds {
         let tira = new TiraDeLeds();
         let stride = 3;
@@ -269,6 +269,9 @@ namespace probot {
         CounterClockwise,
         Shortest
     }
+
+
+
     /*************************************************
      * 
      * motores 
@@ -277,9 +280,9 @@ namespace probot {
      ******************************************************/
 
 
-    //% block="%motor| con direccion %dir| velocidad %speed"
+    // block="%motor| con direccion %dir| velocidad %speed"
     //% speed.min=0 speed.max=100
-    //% group="Kitronik"
+    //% group="Motores"
     export function motorOn(motor: Motores, dir: DireccionMotor, speed: number): void {
         let OutputVal = Math.clamp(0, 100, speed) * 10;
 
@@ -313,8 +316,8 @@ namespace probot {
         }
     }
 
-    //%block="apagar motor %motor"
-    //% group="Kitronik"
+    //block="apagar motor %motor"
+    //% group="Motores"
     export function motorOff(motor: Motores): void {
         switch (motor) {
             case Motores.Motor1:
@@ -327,12 +330,127 @@ namespace probot {
                 break
         }
     }
+    export class Motor {
+        pin1: DigitalPin;
+        pina1: AnalogPin;
+        pin2: DigitalPin;
+        pina2: AnalogPin;
+        velocity: number;
+        setVelocity(vel: number): void {
+            let OutputVal = Math.clamp(0, 100, vel) * 10;
+            this.velocity = OutputVal;
+        }
+        setpins(pin1: DigitalPin, pin2: DigitalPin): void {
+            this.pin1 = pin1;
+            this.pina1 = getAnalogPin(pin1);
+            this.pin2 = pin2;
+            this.pina2 = getAnalogPin(pin2);
+        }
 
+        //% weight=50
+        //% block="%motor| con direccion %dir| velocidad %speed"
+        //% speed.min=0 speed.max=100
+        //% group="Motores"
+        motorOn(dir: DireccionMotor, speed: number): void {
+            this.setVelocity(speed);
+            switch (dir) {
+                case DireccionMotor.Adelante:
+                    pins.analogWritePin(this.pina1, this.velocity);
+                    pins.digitalWritePin(this.pin2, 0);
+                    break
+                case DireccionMotor.Atras:
+                    pins.analogWritePin(this.pina2, this.velocity);
+                    pins.digitalWritePin(this.pin1, 0);
+                    break
+            }
+
+
+        }
+        //%block="%motor|apagar"
+        //% group="Motores"
+        //% weight=20
+        motorOff(): void {
+            pins.digitalWritePin(this.pin1, 0);
+            pins.digitalWritePin(this.pin2, 0);
+        }
+    }
+    function getAnalogPin(pin: DigitalPin): any {
+        switch (pin) {
+            case DigitalPin.P0:
+                return AnalogPin.P0;
+                break;
+            case DigitalPin.P1:
+                return AnalogPin.P1;
+                break;
+            case DigitalPin.P2:
+                return AnalogPin.P2;
+                break;
+            case DigitalPin.P3:
+                return AnalogPin.P3;
+                break;
+            case DigitalPin.P4:
+                return AnalogPin.P4;
+                break;
+            case DigitalPin.P5:
+                return AnalogPin.P5;
+                break;
+            case DigitalPin.P6:
+                return AnalogPin.P6;
+                break;
+            case DigitalPin.P7:
+                return AnalogPin.P7;
+                break;
+            case DigitalPin.P8:
+                return AnalogPin.P8;
+                break;
+            case DigitalPin.P9:
+                return AnalogPin.P9;
+                break;
+            case DigitalPin.P10:
+                return AnalogPin.P10;
+                break;
+            case DigitalPin.P11:
+                return AnalogPin.P11;
+                break;
+            case DigitalPin.P12:
+                return AnalogPin.P12;
+                break;
+            case DigitalPin.P13:
+                return AnalogPin.P13;
+                break;
+            case DigitalPin.P14:
+                return AnalogPin.P14;
+                break;
+            case DigitalPin.P15:
+                return AnalogPin.P15;
+                break;
+            case DigitalPin.P16:
+                return AnalogPin.P16;
+                break;
+            case DigitalPin.P19:
+                return AnalogPin.P19;
+                break;
+            case DigitalPin.P20:
+                return AnalogPin.P20;
+                break;
+        }
+    }
+
+    //%block="Probot en pin de tension %pin1|pin de masa %pin2"
+    //%blockSetVariable=motor
+    //% group="Motores"
+    //% weight=100
+    export function createMotor(pin1: DigitalPin, pin2: DigitalPin): Motor {
+        let motor = new Motor();
+        motor.setpins(pin1, pin2);
+        motor.setVelocity(0);
+        return motor;
+    }
     /*****************************************
      * Musica
      *******************************************/
     //% block="reproducir frecuencia %frecuencia|por %duracion|ms"
-    //% group="Music"
+    //% group="Buzzer"
     export function reproducirTono(frecuencia: number, duracion: number): void {
         pins.analogSetPitchPin(AnalogPin.P0)
         let frequency = frecuencia < 0 ? 0 : frecuencia;
