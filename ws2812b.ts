@@ -1,5 +1,5 @@
-namespace ws2812b {
-    //% shim=sendBufferAsm
+namespace ws2812bj {
+    //% shim=sendBufferAsm1
     export function sendBuffer(buf: Buffer, pin: DigitalPin) {
     }
 }
