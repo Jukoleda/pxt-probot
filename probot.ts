@@ -211,11 +211,11 @@ namespace probot {
     }
 
 
-    //%block="probot en puerto %con| de %leds leds"
+    //%block="probot con conexion en el pin %pin| de %leds leds"
     //% leds.defl=24
     //%blockSetVariable=tira_de_leds
     //% group="Leds"
-    export function crear(con: conn, leds: number): TiraDeLeds {
+    export function crear(pin: DigitalPin, leds: number): TiraDeLeds {
         let tira = new TiraDeLeds();
         let stride = 3;
         tira.buf = pins.createBuffer(leds * stride);
@@ -223,7 +223,7 @@ namespace probot {
         tira._length = leds;
         tira._mode = 0;
         tira.setBrightness(128);
-        tira.setPin(DigitalPin.P0);
+        tira.setPin(pin);
         return tira;
     }
     export function hsl(h: number, s: number, l: number): number {
