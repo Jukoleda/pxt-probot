@@ -65,7 +65,7 @@ namespace probot {
         //%block="%tira_de_leds| mostrar"
         //% group="Leds"
         mostrar() {
-            ws2812b.sendBuffer(this.buf, this.pin);
+            ws2812bj.sendBuffer(this.buf, this.pin);
         }
 
         //%block="%tira_de_leds| limpiar"
