@@ -476,6 +476,7 @@ namespace probot {
      */
     //% blockId=sonar_ping block="ping trig %trig|echo %echo|unit %unit"
     //% group="Ultrasonido"
+    //% inlineInputMode=inline
     export function ping(trig: DigitalPin, echo: DigitalPin, unit: PingUnit, maxCmDistance = 500): number {
         // send pulse
         pins.setPull(trig, PinPullMode.PullNone);
