@@ -1,14 +1,24 @@
 //hola
 enum conn {
-    CON1,
-    CON2,
-    CON3,
-    CON4,
-    CON5,
-    CON6,
-    CON7,
-    CON8
+    CON1 = 1,//p11 p16
+    CON2,//p10 p7
+    CON3,//p13 p5
+    CON4,//p8 p6
+    CON5,//p9 p0
+    CON6,//p15 p4
+    CON7,//p3 p1
+    CON8//p2 p14
 }
+let con = {
+    1: [11, 16],
+    2: [10, 7],
+    3: [13, 5],
+    4: [8, 6],
+    5: [9, 0],
+    6: [15, 4],
+    7: [3, 1],
+    8: [2, 14]
+};
 enum DireccionMotor {
     //% block="adelante"
     Adelante,
@@ -436,16 +446,36 @@ namespace probot {
         }
     }
 
-    //%block="Probot en pin de tension %pin1|pin de masa %pin2"
+    //%block="Probot en pin de tension %pin1|pin de masa %pin2| otra cosa %coso=colores_probot1"
     //%blockSetVariable=motor
     //% group="Motores"
     //% weight=100
-    export function createMotor(pin1: DigitalPin, pin2: DigitalPin): Motor {
+    export function createMotor(pin1: DigitalPin, pin2: DigitalPin, coso: conn): Motor {
         let motor = new Motor();
         motor.setpins(pin1, pin2);
         motor.setVelocity(0);
         return motor;
     }
+    //%block="Probot en %conexion=colores_probot1"
+    //%blockSetVariable=motor
+    //% group="Motores"
+    //% weight=100
+    export function createMotor1(conexion: conn): Motor {
+        let motor = new Motor();
+        motor.setpins(con[conexion][0], con[conexion][1]);
+        motor.setVelocity(0);
+        return motor;
+    }
+
+    //%block="%col"
+    //%blockId="colores_probot1"
+    //% group="Motores"
+    export function conexion(col: conn): number {
+        return col;
+    }
+
+
+
     /*****************************************
      * Musica
      *******************************************/
@@ -496,6 +526,5 @@ namespace probot {
             default: return d;
         }
     }
-    
 
 }
