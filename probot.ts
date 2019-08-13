@@ -1,3 +1,5 @@
+
+
 //conexiones
 enum conn {
     CON1 = 1,//p11 p16
@@ -12,6 +14,7 @@ enum conn {
 /*
 
 //puertos de conexion para la interfaz de misladrillos
+//si se necesitan analogicos usar getAnalogPin(DP)
 let digitalCon:any = {
     1: { P0: DigitalPin.P11, P1: DigitalPin.P16 },
     2: { P0: DigitalPin.P10, P1: DigitalPin.P7 },
@@ -22,8 +25,6 @@ let digitalCon:any = {
     7: { P0: DigitalPin.P3, P1: DigitalPin.P1 },
     8: { P0: DigitalPin.P2, P1: DigitalPin.P14 }
 }
-
-
 */
 
 //puertos de conexion para el gigglebot
@@ -37,12 +38,8 @@ enum DireccionMotor {
     //% block="atras"
     Atras
 }
-enum Motores {
-    //% block="motor 1"
-    Motor1,
-    //% block="motor 2"
-    Motor2
-}
+
+
 enum Colores {
     //% block=rojo
     Red1 = 0xFF0000,
@@ -65,7 +62,7 @@ enum Colores {
 }
 
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['Leds', 'Motores','Buzzer','Ultrasonido']"
+//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Ultrasonido']"
 namespace probot {
 
     export class TiraDeLeds {
@@ -234,7 +231,7 @@ namespace probot {
 
 
     //%block="probot con conexion en el pin %pin| de %leds leds"
-    //% leds.defl=24
+    //% leds.defl=8
     //%blockSetVariable=tira_de_leds
     //% group="Leds"
     export function crear(pin: DigitalPin, leds: number): TiraDeLeds {
@@ -320,7 +317,7 @@ namespace probot {
         }
 
         //% weight=50
-        //% block="%motor| con direccio2n %dir| velocidad %speed"
+        //% block="%motor| con direccion %dir| velocidad %speed"
         //% speed.min=0 speed.max=100
         //% group="Motores"
         motorOn(dir: DireccionMotor, speed: number): void {
@@ -408,7 +405,7 @@ namespace probot {
         }
     }
 
-    //%block="Probot en %conexion=colores_probot1"
+    //%block="Probot en %cone=conexiones_ret"
     //%blockSetVariable=motor
     //% group="Motores"
     //% weight=100
@@ -420,9 +417,9 @@ namespace probot {
     }
 
     //%block="%col"
-    //%blockId="colores_probot1"
+    //%blockId="conexiones_ret"
     //% group="Motores"
-    export function conexiofn(col: conn): any {
+    export function conexiones_ret(col: conn): any {
         return digitalCon[col];
     }
 
