@@ -1,4 +1,4 @@
-//hola
+//conexiones
 enum conn {
     CON1 = 1,//p11 p16
     CON2,//p10 p7
@@ -9,15 +9,27 @@ enum conn {
     CON7,//p3 p1
     CON8//p2 p14
 }
-let con = {
-    1: [11, 16],
-    2: [10, 7],
-    3: [13, 5],
-    4: [8, 6],
-    5: [9, 0],
-    6: [15, 4],
-    7: [3, 1],
-    8: [2, 14]
+/*
+
+//puertos de conexion para la interfaz de misladrillos
+let digitalCon:any = {
+    1: { P0: DigitalPin.P11, P1: DigitalPin.P16 },
+    2: { P0: DigitalPin.P10, P1: DigitalPin.P7 },
+    3: { P0: DigitalPin.P13, P1: DigitalPin.P5 },
+    4: { P0: DigitalPin.P8, P1: DigitalPin.P6 },
+    5: { P0: DigitalPin.P9, P1: DigitalPin.P0 },
+    6: { P0: DigitalPin.P15, P1: DigitalPin.P4 },
+    7: { P0: DigitalPin.P3, P1: DigitalPin.P1 },
+    8: { P0: DigitalPin.P2, P1: DigitalPin.P14 }
+}
+
+
+*/
+
+//puertos de conexion para el gigglebot
+let digitalCon: any = {//11 16 10 7
+    1: { P0: DigitalPin.P12, P1: DigitalPin.P8 },
+    2: { P0: DigitalPin.P16, P1: DigitalPin.P0 }
 };
 enum DireccionMotor {
     //% block="adelante"
@@ -290,56 +302,6 @@ namespace probot {
      ******************************************************/
 
 
-    // block="%motor| con direccion %dir| velocidad %speed"
-    //% speed.min=0 speed.max=100
-    //% group="Motores"
-    export function motorOn(motor: Motores, dir: DireccionMotor, speed: number): void {
-        let OutputVal = Math.clamp(0, 100, speed) * 10;
-
-        switch (motor) {
-            case Motores.Motor1: /*Motor 1 uses Pins 8 and 12*/
-                switch (dir) {
-                    case DireccionMotor.Adelante:
-                        pins.analogWritePin(AnalogPin.P8, OutputVal);
-                        pins.digitalWritePin(DigitalPin.P12, 0); /*Write the low side digitally, to allow the 3rd PWM to be used if required elsewhere*/
-                        break
-                    case DireccionMotor.Atras:
-                        pins.analogWritePin(AnalogPin.P12, OutputVal);
-                        pins.digitalWritePin(DigitalPin.P8, 0);
-                        break
-                }
-
-                break;
-            case Motores.Motor2: /*Motor 2 uses Pins 0 and 16*/
-                switch (dir) {
-                    case DireccionMotor.Adelante:
-                        pins.analogWritePin(AnalogPin.P0, OutputVal);
-                        pins.digitalWritePin(DigitalPin.P16, 0); /*Write the low side digitally, to allow the 3rd PWM to be used if required elsewhere*/
-                        break
-                    case DireccionMotor.Atras:
-                        pins.analogWritePin(AnalogPin.P16, OutputVal);
-                        pins.digitalWritePin(DigitalPin.P0, 0);
-                        break
-                }
-
-                break;
-        }
-    }
-
-    //block="apagar motor %motor"
-    //% group="Motores"
-    export function motorOff(motor: Motores): void {
-        switch (motor) {
-            case Motores.Motor1:
-                pins.digitalWritePin(DigitalPin.P8, 0);
-                pins.digitalWritePin(DigitalPin.P12, 0);
-                break
-            case Motores.Motor2:
-                pins.digitalWritePin(DigitalPin.P0, 0);
-                pins.digitalWritePin(DigitalPin.P16, 0);
-                break
-        }
-    }
     export class Motor {
         pin1: DigitalPin;
         pina1: AnalogPin;
@@ -358,7 +320,7 @@ namespace probot {
         }
 
         //% weight=50
-        //% block="%motor| con direccion %dir| velocidad %speed"
+        //% block="%motor| con direccio2n %dir| velocidad %speed"
         //% speed.min=0 speed.max=100
         //% group="Motores"
         motorOn(dir: DireccionMotor, speed: number): void {
@@ -446,23 +408,13 @@ namespace probot {
         }
     }
 
-    //%block="Probot en pin de tension %pin1|pin de masa %pin2| otra cosa %coso=colores_probot1"
-    //%blockSetVariable=motor
-    //% group="Motores"
-    //% weight=100
-    export function createMotor(pin1: DigitalPin, pin2: DigitalPin, coso: conn): Motor {
-        let motor = new Motor();
-        motor.setpins(pin1, pin2);
-        motor.setVelocity(0);
-        return motor;
-    }
     //%block="Probot en %conexion=colores_probot1"
     //%blockSetVariable=motor
     //% group="Motores"
     //% weight=100
-    export function createMotor1(conexion: conn): Motor {
+    export function createMotor(cone: any): Motor {
         let motor = new Motor();
-        motor.setpins(con[conexion][0], con[conexion][1]);
+        motor.setpins(cone.P0, cone.P1);
         motor.setVelocity(0);
         return motor;
     }
@@ -470,9 +422,11 @@ namespace probot {
     //%block="%col"
     //%blockId="colores_probot1"
     //% group="Motores"
-    export function conexion(col: conn): number {
-        return col;
+    export function conexiofn(col: conn): any {
+        return digitalCon[col];
     }
+
+
 
 
 
