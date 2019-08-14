@@ -1,5 +1,12 @@
 
-
+enum PingUnit {
+    //% block="μs"
+    MicroSeconds,
+    //% block="cm"
+    Centimeters,
+    //% block="inches"
+    Inches
+}
 //conexiones
 enum conn {
     CON1 = 1,//p11 p16
@@ -73,7 +80,6 @@ namespace probot {
         start: number; // start offset in LED strip
         _length: number; // number of LEDs
         _mode: 0;
-
         //%block="%tira_de_leds| mostrar color %rgb=colores_probot"
         //% group="Leds"
         showColor(rgb: number) {
@@ -86,28 +92,24 @@ namespace probot {
         mostrar() {
             ws2812bj.sendBuffer(this.buf, this.pin);
         }
-
         //%block="%tira_de_leds| limpiar"
         //% group="Leds"
         limpiar() {
             const stride = 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
         }
-
         //%block="%tira_de_leds|mostrar arcoiris de %startHue|a %endHue"
         //%startHue.defl=1
         //%endHue.defl=300
         //% group="Leds"
         mostrarArcoiris(startHue: number, endHue: number) {
             if (this._length <= 0) return;
-
             startHue = startHue >> 0;
             endHue = endHue >> 0;
             const saturation = 100;
             const luminance = 50;
             const steps = this._length;
             const direction = HueInterpolationDirection.Clockwise;
-
             //hue
             const h1 = startHue;
             const h2 = endHue;
@@ -124,21 +126,18 @@ namespace probot {
                 hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
             }
             const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
-
             //sat
             const s1 = saturation;
             const s2 = saturation;
             const sDist = s2 - s1;
             const sStep = Math.idiv(sDist, steps);
             const s1_100 = s1 * 100;
-
             //lum
             const l1 = luminance;
             const l2 = luminance;
             const lDist = l2 - l1;
             const lStep = Math.idiv(lDist, steps);
             const l1_100 = l1 * 100
-
             //interpolate
             if (steps === 1) {
                 this.setPixelColor(0, hsl(h1 + hStep, s1 + sStep, l1 + lStep))
@@ -161,14 +160,11 @@ namespace probot {
             if (pixeloffset < 0
                 || pixeloffset >= this._length)
                 return;
-
             let stride = 3;
             pixeloffset = (pixeloffset + this.start) * stride;
-
             let red = unpackR(rgb);
             let green = unpackG(rgb);
             let blue = unpackB(rgb);
-
             let br = this.brightness;
             if (br < 255) {
                 red = (red * br) >> 8;
@@ -181,7 +177,6 @@ namespace probot {
             let red = unpackR(rgb);
             let green = unpackG(rgb);
             let blue = unpackB(rgb);
-
             const br = this.brightness;
             if (br < 255) {
                 red = (red * br) >> 8;
@@ -199,7 +194,6 @@ namespace probot {
             this.buf[offset + 1] = red;
             this.buf[offset + 2] = blue;
         }
-
         setPin(pin: DigitalPin): void {
             this.pin = pin;
             pins.digitalWritePin(this.pin, 0);
@@ -207,7 +201,6 @@ namespace probot {
         setBrightness(brightness: number): void {
             this.brightness = brightness & 0xff;
         }
-
     }
     function unpackR(rgb: number): number {
         let r = (rgb >> 16) & 0xFF;
@@ -221,17 +214,14 @@ namespace probot {
         let b = (rgb) & 0xFF;
         return b;
     }
-
     //%block="%col"
     //%blockId="colores_probot"
     //% group="Leds"
     export function colores(col: Colores): number {
         return col;
     }
-
-
     //%block="probot con conexion en el pin %pin| de %leds leds"
-    //% leds.defl=8
+    //% leds.defl=24
     //%blockSetVariable=tira_de_leds
     //% group="Leds"
     export function crear(pin: DigitalPin, leds: number): TiraDeLeds {
@@ -249,7 +239,6 @@ namespace probot {
         h = Math.round(h);
         s = Math.round(s);
         l = Math.round(l);
-
         h = h % 360;
         s = Math.clamp(0, 99, s);
         l = Math.clamp(0, 99, l);
@@ -288,7 +277,7 @@ namespace probot {
         CounterClockwise,
         Shortest
     }
-
+    
 
 
     /*************************************************
@@ -438,44 +427,33 @@ namespace probot {
         let duration = duracion < 0 ? 0 : duracion;
         pins.analogPitch(frequency, duration)
     }
-    enum PingUnit {
-        //% block="μs"
-        MicroSeconds,
-        //% block="cm"
-        Centimeters,
-        //% block="inches"
-        Inches
-    }
+  
 
     //******************ULTRASONIDO
     /**
      * Send a ping and get the echo time (in microseconds) as a result
-     * @param trig tigger pin
-     * @param echo echo pin
-     * @param unit desired conversion unit
-     * @param maxCmDistance maximum distance in centimeters (default is 500)
+     * param trig tigger pin
+     * param echo echo pin
+     * param unit desired conversion unit
+     * param maxCmDistance maximum distance in centimeters (default is 500)
      */
-    //% blockId=sonar_ping block="ping trig %trig|echo %echo|unit %unit"
+    //% blockId=sonar_ping block="Ultrasonido en %cone=conexiones_ret"
     //% group="Ultrasonido"
     //% inlineInputMode=inline
-    //%blockSetVariable=distancia
-    export function ping(trig: DigitalPin, echo: DigitalPin, unit: PingUnit, maxCmDistance = 500): number {
+    //blockSetVariable=distancia
+    
+    export function ping(cone: any): number {
         // send pulse
-        pins.setPull(trig, PinPullMode.PullNone);
-        pins.digitalWritePin(trig, 0);
+        let maxCmDistance = 500;
+        pins.setPull(cone.P0, PinPullMode.PullNone);
+        pins.digitalWritePin(cone.P0, 0);
         control.waitMicros(2);
-        pins.digitalWritePin(trig, 1);
+        pins.digitalWritePin(cone.P0, 1);
         control.waitMicros(10);
-        pins.digitalWritePin(trig, 0);
-
+        pins.digitalWritePin(cone.P0, 0);
         // read pulse
-        const d = pins.pulseIn(echo, PulseValue.High, maxCmDistance * 58);
-
-        switch (unit) {
-            case PingUnit.Centimeters: return Math.idiv(d, 58);
-            case PingUnit.Inches: return Math.idiv(d, 148);
-            default: return d;
-        }
+        const d = pins.pulseIn(cone.P1, PulseValue.High, maxCmDistance * 58);
+        return Math.idiv(d, 58);
     }
 
 }
