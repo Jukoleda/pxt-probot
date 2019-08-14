@@ -69,7 +69,7 @@ enum Colores {
 }
 
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Ultrasonido']"
+//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
 
     export class TiraDeLeds {
@@ -419,15 +419,24 @@ namespace probot {
     /*****************************************
      * Musica
      *******************************************/
-    //% block="reproducir frecuencia %frecuencia|por %duracion|ms"
-    //% group="Buzzer"
-    export function reproducirTono(frecuencia: number, duracion: number): void {
+    // block="reproducir frecuencia %frecuencia|por %duracion|ms"
+    // group="Buzzer"
+    export function reproducirTono1(frecuencia: number, duracion: number): void {
         pins.analogSetPitchPin(AnalogPin.P0)
         let frequency = frecuencia < 0 ? 0 : frecuencia;
         let duration = duracion < 0 ? 0 : duracion;
         pins.analogPitch(frequency, duration)
     }
-  
+
+    //%block="reproducir frecuencia %frecuencia|por %duracion|ms en %cone=conexiones_ret"
+    //%group="Buzzer"
+    export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
+        pins.analogSetPitchPin(AnalogPin.P0)
+        let frequency = frecuencia < 0 ? 0 : frecuencia;
+        let duration = duracion < 0 ? 0 : duracion;
+        pins.analogPitch(frequency, duration)
+    }
+
 
     //******************ULTRASONIDO
     /**
@@ -438,7 +447,7 @@ namespace probot {
      * param maxCmDistance maximum distance in centimeters (default is 500)
      */
     //% blockId=sonar_ping block="Ultrasonido en %cone=conexiones_ret"
-    //% group="Ultrasonido"
+    //% group="Sensores"
     //% inlineInputMode=inline
     //blockSetVariable=distancia
     
@@ -455,5 +464,18 @@ namespace probot {
         const d = pins.pulseIn(cone.P1, PulseValue.High, maxCmDistance * 58);
         return Math.idiv(d, 58);
     }
+
+    /**
+     * 
+     * INFRARROJO
+     * 
+     */
+    //%block="Infrarrojo en %cone=conexiones_ret"
+    //%group="Sensores"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function infrarrojo(cone:any):number{
+        return pins.digitalReadPin(cone.P0);
+    }
+     
 
 }
