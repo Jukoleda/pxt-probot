@@ -18,11 +18,11 @@ enum conn {
     CON7,//p3 p1
     CON8//p2 p14
 }
-/*
+
 
 //puertos de conexion para la interfaz de misladrillos
 //si se necesitan analogicos usar getAnalogPin(DP)
-let digitalCon:any = {
+let digitalCon: any = {
     1: { P0: DigitalPin.P11, P1: DigitalPin.P16 },
     2: { P0: DigitalPin.P10, P1: DigitalPin.P7 },
     3: { P0: DigitalPin.P13, P1: DigitalPin.P5 },
@@ -32,13 +32,14 @@ let digitalCon:any = {
     7: { P0: DigitalPin.P3, P1: DigitalPin.P1 },
     8: { P0: DigitalPin.P2, P1: DigitalPin.P14 }
 }
-*/
 
+/*
 //puertos de conexion para el gigglebot
 let digitalCon: any = {//11 16 10 7
     1: { P0: DigitalPin.P12, P1: DigitalPin.P8 },
     2: { P0: DigitalPin.P16, P1: DigitalPin.P0 }
 };
+*/
 enum DireccionMotor {
     //% block="adelante"
     Adelante,
@@ -46,6 +47,12 @@ enum DireccionMotor {
     Atras
 }
 
+enum Estados_bicolor {
+    Rojo = 1,
+    Amarillo,
+    Verde,
+    Apagado
+}
 
 enum Colores {
     //% block=rojo
@@ -216,7 +223,7 @@ namespace probot {
     }
     //%block="%col"
     //%blockId="colores_probot"
-    //% group="Leds"
+    //% group="Miscelaneo"
     export function colores(col: Colores): number {
         return col;
     }
@@ -277,7 +284,7 @@ namespace probot {
         CounterClockwise,
         Shortest
     }
-    
+
 
 
     /*************************************************
@@ -407,7 +414,7 @@ namespace probot {
 
     //%block="%col"
     //%blockId="conexiones_ret"
-    //% group="Motores"
+    //% group="Miscelaneo"
     export function conexiones_ret(col: conn): any {
         return digitalCon[col];
     }
@@ -450,7 +457,7 @@ namespace probot {
     //% group="Sensores"
     //% inlineInputMode=inline
     //blockSetVariable=distancia
-    
+
     export function ping(cone: any): number {
         // send pulse
         let maxCmDistance = 500;
@@ -473,9 +480,33 @@ namespace probot {
     //%block="Infrarrojo en %cone=conexiones_ret"
     //%group="Sensores"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function infrarrojo(cone:any):number{
+    export function infrarrojo(cone: any): number {
         return pins.digitalReadPin(cone.P0);
     }
-     
 
+    /*
+        LED BICOLOR
+    */
+    //%block="LED en %cone=conexiones_ret| mostrar como %est"
+    //%group="Leds"
+    export function bicolor(cone: any, est: Estados_bicolor) {
+        switch (est) {
+            case Estados_bicolor.Apagado:
+                pins.digitalWritePin(cone.P0, 0);
+                pins.digitalWritePin(cone.P1, 0);
+                break;
+            case Estados_bicolor.Rojo:
+                pins.digitalWritePin(cone.P0, 1);
+                pins.digitalWritePin(cone.P1, 0);
+                break;
+            case Estados_bicolor.Amarillo:
+                pins.digitalWritePin(cone.P0, 1);
+                pins.digitalWritePin(cone.P1, 1);
+                break;
+            case Estados_bicolor.Verde:
+                pins.digitalWritePin(cone.P0, 0);
+                pins.digitalWritePin(cone.P1, 1);
+                break;
+        }
+    }
 }
