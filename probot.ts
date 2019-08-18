@@ -78,7 +78,7 @@ enum Colores {
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
-
+led.enable(false);
     export class TiraDeLeds {
         buf: Buffer;
         pin: DigitalPin;
@@ -438,7 +438,7 @@ namespace probot {
     //%block="reproducir frecuencia %frecuencia|por %duracion|ms en %cone=conexiones_ret"
     //%group="Buzzer"
     export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
-        pins.analogSetPitchPin(AnalogPin.P0)
+        pins.analogSetPitchPin(cone.P0)
         let frequency = frecuencia < 0 ? 0 : frecuencia;
         let duration = duracion < 0 ? 0 : duracion;
         pins.analogPitch(frequency, duration)
