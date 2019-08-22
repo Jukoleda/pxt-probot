@@ -79,7 +79,7 @@ enum Colores {
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
 led.enable(false);
-    export class TiraDeLeds {
+    /*export class TiraDeLeds {
         buf: Buffer;
         pin: DigitalPin;
         // TODO: encode as bytes instead of 32bit
@@ -286,7 +286,7 @@ led.enable(false);
     }
 
 
-
+*/
     /*************************************************
      * 
      * motores 
