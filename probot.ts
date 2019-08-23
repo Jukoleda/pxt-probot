@@ -78,7 +78,7 @@ enum Colores {
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
-led.enable(false);
+    led.enable(false);
     /*export class TiraDeLeds {
         buf: Buffer;
         pin: DigitalPin;
@@ -422,21 +422,23 @@ led.enable(false);
 
 
 
-
     /*****************************************
      * Musica
      *******************************************/
-    // block="reproducir frecuencia %frecuencia|por %duracion|ms"
-    // group="Buzzer"
-    export function reproducirTono1(frecuencia: number, duracion: number): void {
-        pins.analogSetPitchPin(AnalogPin.P0)
-        let frequency = frecuencia < 0 ? 0 : frecuencia;
-        let duration = duracion < 0 ? 0 : duracion;
-        pins.analogPitch(frequency, duration)
+    //% block="$nota"
+    //% blockId=note_freq
+    //% shim=TD_ID
+    //% color="#ffffff" colorSecondary="#ffffff" colorTertiary="#D83B01"
+    //% nota.fieldEditor="note" note.defl="262"
+    //% nota.fieldOptions.decompileLiterals=true
+    //% useEnumVal=1
+    export function noteFreq(nota: Note): number {
+        return nota;
     }
 
-    //%block="reproducir frecuencia %frecuencia|por %duracion|ms en %cone=conexiones_ret"
+    //%block="reproducir frecuencia $frecuencia|por %duracion|ms en %cone=conexiones_ret"
     //%group="Buzzer"
+    //% frecuencia.shadow="note_freq"
     export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
         pins.analogSetPitchPin(cone.P0)
         let frequency = frecuencia < 0 ? 0 : frecuencia;
@@ -508,5 +510,11 @@ led.enable(false);
                 pins.digitalWritePin(cone.P1, 1);
                 break;
         }
+    }
+
+    //%block="Matriz de leds activada $val"
+    //%val.shadow="toggleYesNo"
+    export function activate_leds(val: boolean): void {
+        val ? led.enable(true) : led.enable(false)
     }
 }
