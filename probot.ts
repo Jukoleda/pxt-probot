@@ -78,7 +78,7 @@ enum Colores {
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
-    export class TiraDeLeds {
+    /*export class TiraDeLeds {
         buf: Buffer;
         pin: DigitalPin;
         // TODO: encode as bytes instead of 32bit
@@ -208,6 +208,7 @@ namespace probot {
             this.brightness = brightness & 0xff;
         }
     }
+    
     function unpackR(rgb: number): number {
         let r = (rgb >> 16) & 0xFF;
         return r;
@@ -284,7 +285,7 @@ namespace probot {
         Shortest
     }
 
-
+*/
 
     /*************************************************
      * 
@@ -431,6 +432,7 @@ namespace probot {
     //% nota.fieldEditor="note" note.defl="262"
     //% nota.fieldOptions.decompileLiterals=true
     //% useEnumVal=1
+    //% group="Miscelaneo"
     export function noteFreq(nota: Note): number {
         return nota;
     }
@@ -445,6 +447,18 @@ namespace probot {
         pins.analogPitch(frequency, duration)
     }
 
+    //%block="reproducir melodia %melodyArray=devuelveMelodia en %cone=conexiones_ret"
+    //%group="Buzzer"
+    export function beginMelody(melodyArray: string[], cone: any) {
+        pins.analogSetPitchPin(cone.P0)
+        music.beginMelody(melodyArray, MelodyOptions.Once)
+    }
+    //%block="melodia %melodia=Melodies"
+    //%blockId=devuelveMelodia
+    //%group="Miscelaneo"
+    export function devuelveMelodia(melodia: Melodies): string[] {
+        return music.builtInMelody(melodia)
+    }
 
     //******************ULTRASONIDO
     /**
@@ -513,6 +527,7 @@ namespace probot {
 
     //%block="Matriz de leds activada $val"
     //%val.shadow="toggleYesNo"
+    //%group="Miscelaneo"
     export function activate_leds(val: boolean): void {
         val ? led.enable(true) : led.enable(false)
     }
