@@ -46,6 +46,7 @@ enum DireccionMotor {
     Atras
 }
 
+
 enum Estados_bicolor {
     Rojo = 1,
     Amarillo,
@@ -328,9 +329,117 @@ namespace probot {
         return neopixel.create(pin.P0, cantidad_leds, NeoPixelMode.RGB)
     }
 
-    
+    /*
+    export class ServoProbot{
+        con: AnalogPin
+        microSecInASecond: any
+        distancePerSec: any 
+        numberOfDegreesPerSec: any 
+
+        constructor(cony: any){
+            this.con = getAnalogPin(cony.P0)
+            this.microSecInASecond = 1000000
+            this.distancePerSec = 100
+            this.numberOfDegreesPerSec = 200
+        }
+
+        //% block="%servo_motor mover hacia $dir"
+        //%group="Motores"
+        mover(dir: DireccionMotor): void {
+            switch (dir) {
+                case DireccionMotor.Adelante:
+                    pins.servoWritePin(this.con, 180);
+                    break
+                case DireccionMotor.Atras:
+                    pins.servoWritePin(this.con, 0);
+                    break
+            }
+
+  
+        }
+
+
+        //% block="%servo_motor stop"
+        //%group="Motores"
+        stop(): void {
+            pins.analogWritePin(this.con, 0);
+        }
+
+  
+        //% block="%servo_motor goto neutral position"
+        //%group="Motores"
+        neutral(): void {
+            pins.servoWritePin(this.con, 90);
+        }
+
+        //% block="%servo_motor move $deg"
+        //%group="Motores"
+        move(deg: number): void {
+            pins.servoWritePin(this.con, deg);
+        }
+
+        //% block="%servo_motor drive forwards %howFar|distance hacia $dir"
+        //%group="Motores"
+        driveForwards(howFar: number, dir: DireccionMotor): void {
+            let timeToWait = (howFar * this.microSecInASecond) / this.distancePerSec; // calculation done this way round to avoid zero rounding
+            switch (dir) {
+                case DireccionMotor.Adelante:
+                    this.mover(DireccionMotor.Adelante);
+                    break
+                case DireccionMotor.Atras:
+                    this.mover(DireccionMotor.Atras);
+                    break
+            }
+
+            control.waitMicros(timeToWait);
+            this.stop();
+        }
+
+
+        // block="%servo_motor turn right %deg|degrees"
+        //%group="Motores"
+        turnRight(deg: number): void {
+            let timeToWait = (deg * this.microSecInASecond) / this.numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+            pins.servoWritePin(AnalogPin.P1, 130);
+            pins.servoWritePin(AnalogPin.P2, 130);
+            control.waitMicros(timeToWait);
+            this.stop();
+        }
+
+        // block="%servo_motor turn left %deg|degrees"
+        //%group="Motores"
+        turnLeft(deg: number): void {
+            let timeToWait = (deg * this.microSecInASecond) / this.numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
+            pins.servoWritePin(AnalogPin.P1, 50);
+            pins.servoWritePin(AnalogPin.P2, 50);
+            control.waitMicros(timeToWait);
+            this.stop()
+        }
+
+        // block="%servo_motor calibrate turn speed to %DegPerSec|degrees per second"
+        //%group="Motores"
+        setDegreesPerSecond(degPerSec: number): void {
+            this.numberOfDegreesPerSec = degPerSec
+        }
+
+        // block="%servo_motor calibrate forward speed to %DistPerSec|mm per second"
+        //%group="Motores"
+        setDistancePerSecond(distPerSec: number): void {
+            this.distancePerSec = distPerSec
+        }
+
+        
+    }
+
+    //%block="Probot en $con=conexiones_ret"
+    //%blockSetVariable=servo_motor
+    //%group="Motores"
+    export function setServoMotor(con: any):ServoProbot {
+        return new ServoProbot(con)
+    }
 
 
     
+    */
 
 }
