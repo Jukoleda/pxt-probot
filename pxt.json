@@ -10,7 +10,7 @@
         "README.md",
         "main.ts",
         "probot.ts",
-        "ws2812b.ts"
+        "ws2812bj.ts"
     ],
     "testFiles": [
         "test.ts"
