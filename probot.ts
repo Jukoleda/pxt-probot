@@ -442,4 +442,13 @@ namespace probot {
     
     */
 
+
+    //%block="Potenciometro en $con=conexiones_ret"
+    export function potenciometro(con: any): number {
+        led.enable(false)
+        let valor = pins.analogReadPin(getAnalogPin(con.P1))
+        led.enable(true)
+        return valor
+    }
+
 }
