@@ -1,12 +1,5 @@
 
-enum PingUnit {
-    //% block="μs"
-    MicroSeconds,
-    //% block="cm"
-    Centimeters,
-    //% block="inches"
-    Inches
-}
+
 //conexiones
 enum conn {
     CON1 = 1,//p11 p16
@@ -78,7 +71,7 @@ enum Colores {
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
-    
+
     /*************************************************
      * motores 
      ******************************************************/
@@ -230,7 +223,7 @@ namespace probot {
     //%group="Buzzer"
     //% frecuencia.shadow="note_freq"
     export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
-        pins.analogSetPitchPin(cone.P0)
+        pins.analogSetPitchPin(cone.P1)
         let frequency = frecuencia < 0 ? 0 : frecuencia;
         let duration = duracion < 0 ? 0 : duracion;
         pins.analogPitch(frequency, duration)
@@ -239,7 +232,7 @@ namespace probot {
     //%block="reproducir melodia %melodyArray=devuelveMelodia en %cone=conexiones_ret"
     //%group="Buzzer"
     export function beginMelody(melodyArray: string[], cone: any) {
-        pins.analogSetPitchPin(cone.P0)
+        pins.analogSetPitchPin(cone.P1)
         music.beginMelody(melodyArray, MelodyOptions.Once)
     }
     //%block="melodia %melodia=Melodies"
@@ -249,42 +242,27 @@ namespace probot {
         return music.builtInMelody(melodia)
     }
 
-    //******************ULTRASONIDO
-    /**
-     * Send a ping and get the echo time (in microseconds) as a result
-     * param trig tigger pin
-     * param echo echo pin
-     * param unit desired conversion unit
-     * param maxCmDistance maximum distance in centimeters (default is 500)
-     */
-    //% blockId=sonar_ping block="Ultrasonido en %cone=conexiones_ret"
-    //% group="Sensores"
-    //% inlineInputMode=inline
-    //blockSetVariable=distancia
-
-    export function ping(cone: any): number {
-        // send pulse
-        let maxCmDistance = 500;
-        pins.setPull(cone.P0, PinPullMode.PullNone);
-        pins.digitalWritePin(cone.P0, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(cone.P0, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(cone.P0, 0);
-        // read pulse
-        const d = pins.pulseIn(cone.P1, PulseValue.High, maxCmDistance * 58);
-        return Math.idiv(d, 58);
-    }
 
     /**
      * 
      * INFRARROJO
      * 
      */
-    //%block="Infrarrojo en %cone=conexiones_ret"
+    //%block="InfrarrojoP1 en %cone=conexiones_ret"
     //%group="Sensores"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function infrarrojo(cone: any): number {
+        return pins.digitalReadPin(cone.P1);
+    }
+    /**
+     * 
+     * INFRARROJO
+     * 
+     */
+    //%block="InfrarrojoP0 en %cone=conexiones_ret"
+    //%group="Sensores"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function infrarrojo2(cone: any): number {
         return pins.digitalReadPin(cone.P0);
     }
 
@@ -329,7 +307,55 @@ namespace probot {
         return neopixel.create(pin.P0, cantidad_leds, NeoPixelMode.RGB)
     }
 
-    /*
+   
+    //%block="Potenciometro en $con=conexiones_ret"
+    export function potenciometro(con: any): number {
+        return pins.analogReadPin(getAnalogPin(con.P1))
+    }
+
+
+    //%block="Luz en $con=conexiones_ret"
+    export function sensorLuz(con: any): number {
+        return pins.analogReadPin(getAnalogPin(con.P1))
+    }
+
+    //%block="Sonido en $con=conexiones_ret"
+    export function sensorSonido(con: any): number {
+        return pins.analogReadPin(getAnalogPin(con.P1))
+    }
+    /******************ULTRASONIDO
+     */
+    //% blockId=sonar_ping block="Ultrasonido en %cone=conexiones_ret"
+    //% group="Sensores"
+    //% inlineInputMode=inline
+
+    export function ping(cone: any): number {
+        // send pulse
+        let maxCmDistance = 500;
+        pins.setPull(cone.P1, PinPullMode.PullNone);
+        pins.digitalWritePin(cone.P1, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(cone.P1, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(cone.P1, 0);
+        // read pulse
+        const d = pins.pulseIn(cone.P0, PulseValue.High, maxCmDistance * 58);
+        return Math.idiv(d, 58);
+    }
+
+    //%block="ServoP1 $con=conexiones_ret|grados$grados"
+    export function servoProbot0(con: any, grados: number){
+        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
+        pins.servoWritePin(con.P1, num);
+
+    }
+    //%block="ServoP0 $con=conexiones_ret|grados$grados"
+    export function servoProbot1(con: any, grados: number) {
+        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
+        pins.servoWritePin(con.P0, num);
+
+    }
+ /*
     export class ServoProbot{
         con: AnalogPin
         microSecInASecond: any
@@ -343,8 +369,8 @@ namespace probot {
             this.numberOfDegreesPerSec = 200
         }
 
-        //% block="%servo_motor mover hacia $dir"
-        //%group="Motores"
+        // block="%servo_motor mover hacia $dir"
+        //group="Motores"
         mover(dir: DireccionMotor): void {
             switch (dir) {
                 case DireccionMotor.Adelante:
@@ -359,27 +385,27 @@ namespace probot {
         }
 
 
-        //% block="%servo_motor stop"
-        //%group="Motores"
+        // block="%servo_motor stop"
+        //group="Motores"
         stop(): void {
             pins.analogWritePin(this.con, 0);
         }
 
   
-        //% block="%servo_motor goto neutral position"
-        //%group="Motores"
+        // block="%servo_motor goto neutral position"
+        //group="Motores"
         neutral(): void {
             pins.servoWritePin(this.con, 90);
         }
 
-        //% block="%servo_motor move $deg"
-        //%group="Motores"
+        // block="%servo_motor move $deg"
+        //group="Motores"
         move(deg: number): void {
             pins.servoWritePin(this.con, deg);
         }
 
-        //% block="%servo_motor drive forwards %howFar|distance hacia $dir"
-        //%group="Motores"
+        //block="%servo_motor drive forwards %howFar|distance hacia $dir"
+        //group="Motores"
         driveForwards(howFar: number, dir: DireccionMotor): void {
             let timeToWait = (howFar * this.microSecInASecond) / this.distancePerSec; // calculation done this way round to avoid zero rounding
             switch (dir) {
@@ -397,7 +423,7 @@ namespace probot {
 
 
         // block="%servo_motor turn right %deg|degrees"
-        //%group="Motores"
+        //group="Motores"
         turnRight(deg: number): void {
             let timeToWait = (deg * this.microSecInASecond) / this.numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
             pins.servoWritePin(AnalogPin.P1, 130);
@@ -407,7 +433,7 @@ namespace probot {
         }
 
         // block="%servo_motor turn left %deg|degrees"
-        //%group="Motores"
+        //group="Motores"
         turnLeft(deg: number): void {
             let timeToWait = (deg * this.microSecInASecond) / this.numberOfDegreesPerSec;// calculation done this way round to avoid zero rounding
             pins.servoWritePin(AnalogPin.P1, 50);
@@ -417,13 +443,13 @@ namespace probot {
         }
 
         // block="%servo_motor calibrate turn speed to %DegPerSec|degrees per second"
-        //%group="Motores"
+        //group="Motores"
         setDegreesPerSecond(degPerSec: number): void {
             this.numberOfDegreesPerSec = degPerSec
         }
 
         // block="%servo_motor calibrate forward speed to %DistPerSec|mm per second"
-        //%group="Motores"
+        //group="Motores"
         setDistancePerSecond(distPerSec: number): void {
             this.distancePerSec = distPerSec
         }
@@ -431,9 +457,9 @@ namespace probot {
         
     }
 
-    //%block="Probot en $con=conexiones_ret"
-    //%blockSetVariable=servo_motor
-    //%group="Motores"
+    //block="Probot en $con=conexiones_ret"
+    //blockSetVariable=servo_motor
+    //group="Motores"
     export function setServoMotor(con: any):ServoProbot {
         return new ServoProbot(con)
     }
@@ -442,13 +468,5 @@ namespace probot {
     
     */
 
-
-    //%block="Potenciometro en $con=conexiones_ret"
-    export function potenciometro(con: any): number {
-        led.enable(false)
-        let valor = pins.analogReadPin(getAnalogPin(con.P1))
-        led.enable(true)
-        return valor
-    }
 
 }
