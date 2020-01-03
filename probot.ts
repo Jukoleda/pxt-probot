@@ -14,6 +14,7 @@ enum conn {
 //Comentario 1
 //puertos de conexion para la interfaz de misladrillos
 //si se necesitan analogicos usar getAnalogPin(DP)
+// hola estoy editando
 let digitalCon: any = {
     1: { P0: DigitalPin.P11, P1: DigitalPin.P16 },
     2: { P0: DigitalPin.P10, P1: DigitalPin.P7 },
