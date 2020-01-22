@@ -2,28 +2,28 @@
 
 //conexiones
 enum conn {
-    CON1 = 1,//p11 p16
-    CON2,//p10 p7
-    CON3,//p13 p5
-    CON4,//p8 p6
-    CON5,//p9 p0
-    CON6,//p15 p4
-    CON7,//p3 p1
-    CON8//p2 p14
+    CON1 = 1,//p8 p0
+    CON2,//p12 p1
+    CON3,//p16 p2
+    CON4,//p6 p3
+    CON5,//p7 p4
+    CON6,//p9 p10
+    CON7,//p13 p14
+    CON8//p15 p11
 }
 //Comentario 1
 //puertos de conexion para la interfaz de misladrillos
 //si se necesitan analogicos usar getAnalogPin(DP)
 // hola estoy haciendo un update......
 let digitalCon: any = {
-    1: { P0: DigitalPin.P11, P1: DigitalPin.P16 },
-    2: { P0: DigitalPin.P10, P1: DigitalPin.P7 },
-    3: { P0: DigitalPin.P13, P1: DigitalPin.P5 },
-    4: { P0: DigitalPin.P8, P1: DigitalPin.P6 },
-    5: { P0: DigitalPin.P9, P1: DigitalPin.P0 },
-    6: { P0: DigitalPin.P15, P1: DigitalPin.P4 },
-    7: { P0: DigitalPin.P3, P1: DigitalPin.P1 },
-    8: { P0: DigitalPin.P2, P1: DigitalPin.P14 }
+    1: { P0: DigitalPin.P8, P1: DigitalPin.P0 },
+    2: { P0: DigitalPin.P12, P1: DigitalPin.P1 },
+    3: { P0: DigitalPin.P16, P1: DigitalPin.P2 },
+    4: { P0: DigitalPin.P6, P1: DigitalPin.P3 },
+    5: { P0: DigitalPin.P7, P1: DigitalPin.P4 },
+    6: { P0: DigitalPin.P9, P1: DigitalPin.P10 },
+    7: { P0: DigitalPin.P13, P1: DigitalPin.P14 },
+    8: { P0: DigitalPin.P15, P1: DigitalPin.P11 }
 }
 
 /*
