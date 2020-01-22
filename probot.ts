@@ -249,18 +249,7 @@ namespace probot {
      * INFRARROJO
      * 
      */
-    //%block="InfrarrojoP1 en %cone=conexiones_ret"
-    //%group="Sensores"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function infrarrojo(cone: any): number {
-        return pins.digitalReadPin(cone.P1);
-    }
-    /**
-     * 
-     * INFRARROJO
-     * 
-     */
-    //%block="InfrarrojoP0 en %cone=conexiones_ret"
+    //%block="Infrarrojo en %cone=conexiones_ret"
     //%group="Sensores"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function infrarrojo2(cone: any): number {
