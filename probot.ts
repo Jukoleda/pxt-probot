@@ -333,13 +333,7 @@ namespace probot {
         return Math.idiv(d, 58);
     }
 
-    //%block="ServoP1 $con=conexiones_ret|grados$grados"
-    export function servoProbot0(con: any, grados: number) {
-        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
-        pins.servoWritePin(con.P1, num);
-
-    }
-    //%block="ServoP0 $con=conexiones_ret|grados$grados"
+    //%block="Servo $con=conexiones_ret|grados$grados"
     export function servoProbot1(con: any, grados: number) {
         let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
         pins.servoWritePin(con.P0, num);
