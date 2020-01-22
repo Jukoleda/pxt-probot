@@ -334,9 +334,9 @@ namespace probot {
     }
 
     //%block="Servo $con=conexiones_ret|grados$grados"
-    export function servoProbot1(con: any, grados: number) {
-        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados;
-        return pins.servoWritePin(getAnalogPin(con.P0), num);
+    export function servoProbot(con: any, grados: number) {
+        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
+        pins.servoWritePin(getAnalogPin(con.P0), num);
         
     }
     /*
