@@ -333,12 +333,13 @@ namespace probot {
         return Math.idiv(d, 58);
     }
 
-    //%block="Servo $con=conexiones_ret|grados$grados"
+    //%block="Servo $con=conexiones_ret|grados |%grados"
+    //% group="Motores"
+    //% grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
-        let num = grados < 0 ? 0 : grados > 180 ? 180 : grados
-        pins.servoWritePin(getAnalogPin(con.P0), num);
-        
+        pins.servoWritePin(getAnalogPin(con.P0), grados)
     }
+
     /*
        export class ServoProbot{
            con: AnalogPin
@@ -454,3 +455,7 @@ namespace probot {
 
 
 }
+
+
+
+
