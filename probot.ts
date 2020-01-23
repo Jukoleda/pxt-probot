@@ -337,7 +337,7 @@ namespace probot {
     //% group="Motores"
     //% grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
-        pins.servoWritePin(getAnalogPin(con.P0), grados)
+        return pins.servoWritePin(getAnalogPin(con.P0), grados)
     }
 
     /*
