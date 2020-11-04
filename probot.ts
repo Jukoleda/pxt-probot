@@ -68,7 +68,7 @@ enum Colores {
     //% block=negro
     Black1 = 0x000000
 }
-//sadasdasd
+
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
 namespace probot {
