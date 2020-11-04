@@ -259,7 +259,7 @@ namespace probot {
     /*
         LED BICOLOR
     */
-    //%block="LED en %cone=conexiones_ret| mostrar como %est"
+    //%block="LED  bicolor en %cone=conexiones_ret| mostrar como %est"
     //%group="Leds"
     export function bicolor(cone: any, est: Estados_bicolor) {
         switch (est) {
@@ -296,7 +296,60 @@ namespace probot {
     export function newStripNeopixel(pin: any, cantidad_leds: number): neopixel.Strip {
         return neopixel.create(pin.P0, cantidad_leds, NeoPixelMode.RGB)
     }
+   //% block="$leds=variables_get(leds_neopixel)|mostrar color %rgb=colores_probot" 
+    //% group="Leds"
+    export function showColor(leds: neopixel.Strip, rgb: number) {
+        rgb = rgb >> 0;
+        setAllRGB(leds, rgb);
+        leds.show();
+    }
 
+    //% blockId="colores_probot" block="%color"
+    export function colors(color: Colores): number {
+        return color;
+    }
+    function setAllRGB(leds: neopixel.Strip, rgb: number) {
+        let red = unpackR(rgb);
+        let green = unpackG(rgb);
+        let blue = unpackB(rgb);
+
+        const br = leds.brightness;
+        if (br < 255) {
+            red = (red * br) >> 8;
+            green = (green * br) >> 8;
+            blue = (blue * br) >> 8;
+        }
+        const end = leds.start + leds._length;
+        const stride = leds._mode === NeoPixelMode.RGBW ? 4 : 3;
+        for (let i = leds.start; i < end; ++i) {
+            setBufferRGB(leds, i * stride, red, green, blue)
+        }
+    }
+    function setBufferRGB(leds: neopixel.Strip, offset: number, red: number, green: number, blue: number): void {
+        if (leds._mode === NeoPixelMode.RGB_RGB) {
+            leds.buf[offset + 0] = red;
+            leds.buf[offset + 1] = green;
+        } else {
+            leds.buf[offset + 0] = green;
+            leds.buf[offset + 1] = red;
+        }
+        leds.buf[offset + 2] = blue;
+    }
+    function packRGB(a: number, b: number, c: number): number {
+        return ((a & 0xFF) << 16) | ((b & 0xFF) << 8) | (c & 0xFF);
+    }
+    function unpackR(rgb: number): number {
+        let r = (rgb >> 16) & 0xFF;
+        return r;
+    }
+    function unpackG(rgb: number): number {
+        let g = (rgb >> 8) & 0xFF;
+        return g;
+    }
+    function unpackB(rgb: number): number {
+        let b = (rgb) & 0xFF;
+        return b;
+    }
 
     //%block="Potenciometro en $con=conexiones_ret"
     export function potenciometro(con: any): number {
