@@ -45,6 +45,14 @@ enum Estados_bicolor {
     Rojo = 1,
     Amarillo,
     Verde,
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
     Apagado
 }
 
@@ -68,6 +76,7 @@ enum Colores {
     //% block=negro
     Black1 = 0x000000
 }
+
 
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
@@ -252,14 +261,26 @@ namespace probot {
     //%block="Infrarrojo en %cone=conexiones_ret"
     //%group="Sensores"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function infrarrojo2(cone: any): number {
+    export function infrarrojo(cone: any): number {
         return pins.digitalReadPin(cone.P0);
+    }
+
+    /**
+     * 
+     * PULSADOR
+     * 
+     */
+    //%block="Pulsador en %cone=conexiones_ret"
+    //%group="Sensores"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function pulsador(cone: any): number {
+        return 1 - pins.digitalReadPin(cone.P0);
     }
 
     /*
         LED BICOLOR
     */
-    //%block="LED  bicolor en %cone=conexiones_ret| mostrar como %est"
+    //%block="LED bicolor en %cone=conexiones_ret| mostrar como %est"
     //%group="Leds"
     export function bicolor(cone: any, est: Estados_bicolor) {
         switch (est) {
@@ -278,6 +299,78 @@ namespace probot {
             case Estados_bicolor.Verde:
                 pins.digitalWritePin(cone.P0, 0);
                 pins.digitalWritePin(cone.P1, 1);
+                break;
+            case Estados_bicolor.A:
+                pins.analogWritePin(getAnalogPin(cone.P0), 512);
+                pins.analogWritePin(getAnalogPin(cone.P1), 512);
+                break;
+        }
+    }
+
+    /*
+        LED BICOLOR NUEVO
+    */
+    //%block="LED bicolor nuevo en %cone=conexiones_ret| mostrar como %est"
+    //%group="Leds"
+    export function bicolor2(cone: any, est: Estados_bicolor) {
+        switch (est) {
+            case Estados_bicolor.Amarillo:
+                pins.digitalWritePin(cone.P0, 0);
+                pins.digitalWritePin(cone.P1, 0);
+               // pins.analogWritePin(getAnalogPin(cone.P1), 512);
+                break;
+            case Estados_bicolor.Verde:
+                pins.digitalWritePin(cone.P0, 1);
+                pins.digitalWritePin(cone.P1, 0);
+                break;
+            case Estados_bicolor.Apagado:
+                pins.analogWritePin(getAnalogPin(cone.P0), 512);
+                pins.analogWritePin(getAnalogPin(cone.P1), 0);
+               
+                break;
+            case Estados_bicolor.Rojo:
+                pins.digitalWritePin(cone.P0, 0);
+                pins.digitalWritePin(cone.P1, 1);
+                break;
+
+            case Estados_bicolor.A:
+                pins.analogWritePin(getAnalogPin(cone.P0), 128);
+                pins.analogWritePin(getAnalogPin(cone.P1), 0);
+                break;
+
+            case Estados_bicolor.B:
+                pins.analogWritePin(getAnalogPin(cone.P0), 256);
+                pins.analogWritePin(getAnalogPin(cone.P1), 0);
+                break;
+
+            case Estados_bicolor.C:
+                pins.analogWritePin(getAnalogPin(cone.P0), 512);
+                pins.analogWritePin(getAnalogPin(cone.P1), 0);
+                break;
+
+            case Estados_bicolor.D:
+                pins.analogWritePin(getAnalogPin(cone.P0), 1023);
+                pins.analogWritePin(getAnalogPin(cone.P1), 0);
+                break;
+
+            case Estados_bicolor.E:
+                pins.analogWritePin(getAnalogPin(cone.P0), 0);
+                pins.analogWritePin(getAnalogPin(cone.P1), 128);
+                break;
+
+            case Estados_bicolor.F:
+                pins.analogWritePin(getAnalogPin(cone.P0), 0);
+                pins.analogWritePin(getAnalogPin(cone.P1), 256);
+                break;
+
+            case Estados_bicolor.G:
+                pins.analogWritePin(getAnalogPin(cone.P0), 0);
+                pins.analogWritePin(getAnalogPin(cone.P1), 512);
+                break;
+
+            case Estados_bicolor.H:
+                pins.analogWritePin(getAnalogPin(cone.P0), 512);
+                pins.analogWritePin(getAnalogPin(cone.P1), 512);
                 break;
         }
     }
