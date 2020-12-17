@@ -40,7 +40,6 @@ enum DireccionMotor {
     Atras
 }
 
-
 enum Estados_bicolor {
     Rojo = 1,
     Amarillo,
@@ -70,7 +69,7 @@ enum Colores {
 }
 
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores']"
+//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores', 'Actuadores']"
 namespace probot {
 
     /*************************************************
@@ -393,7 +392,29 @@ namespace probot {
         return pins.servoWritePin(getAnalogPin(con.P0), grados)
     }
 
-
+     /*
+     * 
+     * PULSADOR
+     * 
+     */
+    //%block="Pulsador en %cone=conexiones_ret"
+    //%group="Actuadores"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function pulsador(cone: any): number {
+        return pins.digitalReadPin(cone.P0);
+    }
+    
+     /*
+     * 
+     * LASER
+     * 
+     
+    //%block="LASER en %cone=conexiones_ret"
+    //%group="Leds"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function laser(cone: any, estado: Estados_laser): number {
+        return pins.digitalWritePin(cone.P0, estado);
+    }*/
 }
 
 
