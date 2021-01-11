@@ -11,7 +11,9 @@
         "README.md",
         "main.ts",
         "probot.ts",
-        "ws2812bj.ts"
+        "ws2812bj.ts",
+        "_locales/en/probot-strings.json",
+        "_locales/en/probot-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
