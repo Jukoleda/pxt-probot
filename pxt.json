@@ -12,8 +12,7 @@
         "main.ts",
         "probot.ts",
         "ws2812bj.ts",
-        "_locales/en-us/pxt-probot-strings.json",
-        "_locales/en-us/probot-strings.json"
+        "_locales/en/probots-strings.json"
     ],
     "testFiles": [
         "test.ts"
