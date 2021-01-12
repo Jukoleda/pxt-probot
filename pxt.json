@@ -2,7 +2,6 @@
     "name": "probots",
     "version": "0.1.2",
     "description": "Mis ladrillos extension",
-    "licence": "MIT",
     "dependencies": {
         "core": "*",
         "radio": "*",
@@ -14,9 +13,7 @@
         "probot.ts",
         "ws2812bj.ts",
         "_locales/en-us/pxt-probot-strings.json",
-        "_locales/en-us/probot-jsdoc-strings.json",
-        "_locales/de/probot-strings.json",
-        "_locales/de/probot-jsdoc-strings.json"
+        "_locales/en-us/probot-strings.json"
     ],
     "testFiles": [
         "test.ts"
@@ -25,5 +22,6 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "licence": "MIT"
 }

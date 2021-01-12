@@ -70,7 +70,7 @@ enum Colores {
 
 //% weight=5 color=#ff8000 icon="\uf2db"
 //% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores', 'Actuadores']"
-namespace probot {
+namespace probots {
 
     /*************************************************
      * motores 

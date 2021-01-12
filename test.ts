@@ -1,1 +1,1 @@
-basic.showNumber(probot.ping(probot.conexiones_ret(conn.CON1)))
+basic.showNumber(probots.ping(probots.conexiones_ret(conn.CON1)))
