@@ -69,7 +69,7 @@ enum Colores {
 }
 
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['Miscelaneo','Leds', 'Motores','Buzzer','Sensores', 'Actuadores']"
+//% groups="['Miscelaneo','Leds', 'Motores','Sonido','Sensores', 'Actuadores']"
 namespace probots {
 
     /*************************************************
@@ -194,33 +194,17 @@ namespace probots {
         return motor;
     }
 
-    //%block="%col"
-    //%blockId="conexiones_ret"
-    //% group="Miscelaneo"
-    export function conexiones_ret(col: conn): any {
-        return digitalCon[col];
-    }
-
+   
 
 
 
     /*****************************************
      * Musica
      *******************************************/
-    //% block="$nota"
-    //% blockId=note_freq
-    //% shim=TD_ID
-    //% color="#ffffff" colorSecondary="#ffffff" colorTertiary="#D83B01"
-    //% nota.fieldEditor="note" note.defl="262"
-    //% nota.fieldOptions.decompileLiterals=true
-    //% useEnumVal=1
-    //% group="Miscelaneo"
-    export function noteFreq(nota: Note): number {
-        return nota;
-    }
+    
 
     //%block="reproducir frecuencia $frecuencia|por %duracion|ms en %cone=conexiones_ret"
-    //%group="Buzzer"
+    //%group="Sonido"
     //% frecuencia.shadow="note_freq"
     export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
         pins.analogSetPitchPin(cone.P1)
@@ -230,17 +214,12 @@ namespace probots {
     }
 
     //%block="reproducir melodia %melodyArray=devuelveMelodia en %cone=conexiones_ret"
-    //%group="Buzzer"
+    //%group="Sonido"
     export function beginMelody(melodyArray: string[], cone: any) {
         pins.analogSetPitchPin(cone.P1)
         music.beginMelody(melodyArray, MelodyOptions.Once)
     }
-    //%block="melodia %melodia=Melodies"
-    //%blockId=devuelveMelodia
-    //%group="Miscelaneo"
-    export function devuelveMelodia(melodia: Melodies): string[] {
-        return music.builtInMelody(melodia)
-    }
+    
 
 
     /**
@@ -281,32 +260,26 @@ namespace probots {
         }
     }
 
-    //%block="Matriz de leds activada $val"
-    //%val.shadow="toggleYesNo"
-    //%group="Miscelaneo"
-    export function activate_leds(val: boolean): void {
-        val ? led.enable(true) : led.enable(false)
-    }
+    
 
     //%block="Probot en $pin=conexiones_ret| de $cantidad_leds|leds"
     //%cantidad_leds.defl=8
     //%blockSetVariable=leds_neopixel
     //%group="Leds"
+    //% weight=100
     export function newStripNeopixel(pin: any, cantidad_leds: number): neopixel.Strip {
         return neopixel.create(pin.P0, cantidad_leds, NeoPixelMode.RGB)
     }
    //% block="$leds=variables_get(leds_neopixel)|mostrar color %rgb=colores_probot" 
     //% group="Leds"
+    //% weight=80
     export function showColor(leds: neopixel.Strip, rgb: number) {
         rgb = rgb >> 0;
         setAllRGB(leds, rgb);
         leds.show();
     }
 
-    //% blockId="colores_probot" block="%color"
-    export function colors(color: Colores): number {
-        return color;
-    }
+   
     function setAllRGB(leds: neopixel.Strip, rgb: number) {
         let red = unpackR(rgb);
         let green = unpackG(rgb);
@@ -350,18 +323,21 @@ namespace probots {
         return b;
     }
 
-    //%block="Potenciometro en $con=conexiones_ret"
+    // block="Potenciometro en $con=conexiones_ret"
+    // group="Sensores"
     export function potenciometro(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
 
 
-    //%block="Luz en $con=conexiones_ret"
+    // block="Luz en $con=conexiones_ret"
+    // group="Sensores"
+
     export function sensorLuz(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
 
-    //%block="Sonido en $con=conexiones_ret"
+    // block="Sonido en $con=conexiones_ret"
     export function sensorSonido(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
@@ -385,9 +361,9 @@ namespace probots {
         return Math.idiv(d, 58);
     }
 
-    //%block="Servo $con=conexiones_ret|grados |%grados"
-    //% group="Motores"
-    //% grados.min=0 grados.max=180
+    // block="Servo $con=conexiones_ret|grados |%grados"
+    // group="Motores"
+    // grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
         return pins.servoWritePin(getAnalogPin(con.P0), grados)
     }
@@ -415,6 +391,50 @@ namespace probots {
     export function laser(cone: any, estado: Estados_laser): number {
         return pins.digitalWritePin(cone.P0, estado);
     }*/
+
+     //%block="%col"
+    //%blockId="conexiones_ret"
+    //% group="Miscelaneo"
+    //% weight=1
+    export function conexiones_ret(col: conn): any {
+        return digitalCon[col];
+    }
+
+     //% blockId="colores_probot" block="%color"
+    //% group="Miscelaneo"
+    //% weight=2
+    export function colors(color: Colores): number {
+        return color;
+    }
+
+    //%block="Matriz de leds activada $val"
+    //%val.shadow="toggleYesNo"
+    //%group="Miscelaneo"
+    //% weight=5
+    export function activate_leds(val: boolean): void {
+        val ? led.enable(true) : led.enable(false)
+    }
+
+    //%block="melodia %melodia=Melodies"
+    //%blockId=devuelveMelodia
+    //%group="Miscelaneo"
+    //% weight=3
+    export function devuelveMelodia(melodia: Melodies): string[] {
+        return music.builtInMelody(melodia)
+    }
+
+    //% block="$nota"
+    //% blockId=note_freq
+    //% shim=TD_ID
+    //% color="#ffffff" colorSecondary="#ffffff" colorTertiary="#D83B01"
+    //% nota.fieldEditor="note" note.defl="262"
+    //% nota.fieldOptions.decompileLiterals=true
+    //% useEnumVal=1
+    //% group="Miscelaneo"
+    //% weight=4
+    export function noteFreq(nota: Note): number {
+        return nota;
+    }
 }
 
 
