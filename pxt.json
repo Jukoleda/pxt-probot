@@ -4,18 +4,16 @@
     "description": "Mis ladrillos extension",
     "dependencies": {
         "core": "*",
-        "radio": "*",
-        "neopixel": "github:microsoft/pxt-neopixel#v0.6.12"
+        "ws2812b": "github:microsoft/pxt-ws2812b#v0.1.1"
     },
     "files": [
         "README.md",
-        "main.ts",
         "probot.ts",
-        "ws2812bj.ts",
-        "_locales/en/probots-strings.json"
+        "_locales/en/probots-strings.json",
+        "_locales/es/probots-strings.json"
     ],
     "testFiles": [
-        "test.ts"
+        "probotest.ts"
     ],
     "public": true,
     "supportedTargets": [
