@@ -2,7 +2,7 @@
     "name": "probots",
     "version": "0.1.2",
     "description": "Mis ladrillos extension",
-    "licence": "MIT"
+    "licence": "MIT",
     "dependencies": {
         "core": "*",
         "radio": "*",
