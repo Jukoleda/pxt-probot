@@ -1,7 +1,8 @@
 {
-    "name": "probot",
-    "version": "0.1.0",
-    "description": "",
+    "name": "probots",
+    "version": "0.1.2",
+    "description": "Mis ladrillos extension",
+    "licence": "MIT"
     "dependencies": {
         "core": "*",
         "radio": "*",
@@ -20,7 +21,7 @@
     "testFiles": [
         "test.ts"
     ],
-    "public": false,
+    "public": true,
     "supportedTargets": [
         "microbit"
     ],
