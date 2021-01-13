@@ -32,9 +32,9 @@ let digitalCon: any = {//11 16 10 7
 };
 */
 enum DireccionMotor {
-    //% block="adelante"
+    //% block="forward"
     Adelante,
-    //% block="atras"
+    //% block="backward"
     Atras
 }
 
@@ -46,24 +46,24 @@ enum Estados_bicolor {
 }
 
 enum Colores {
-    //% block=rojo
-    Red1 = 0xFF0000,
-    //% block=naranja
-    Orange1 = 0xFFA500,
-    //% block=amarillo
-    Yellow1 = 0xFFFF00,
-    //% block=verde
-    Green1 = 0x00FF00,
-    //% block=azul
-    Blue1 = 0x0000FF,
-    //% block=violeta
-    Violet1 = 0x8a2be2,
-    //% block=purpura
-    Purple1 = 0xFF00FF,
-    //% block=blanco
-    White1 = 0xFFFFFF,
-    //% block=negro
-    Black1 = 0x000000
+    //% block=red
+    Red = 0xFF0000,
+    //% block=orange
+    Orange = 0xFFA500,
+    //% block=yellow
+    Yellow = 0xFFFF00,
+    //% block=green
+    Green = 0x00FF00,
+    //% block=blue
+    Blue = 0x0000FF,
+    //% block=violet
+    Violet = 0x8a2be2,
+    //% block=purple
+    Purple = 0xFF00FF,
+    //% block=white
+    White = 0xFFFFFF,
+    //% block=black
+    Black = 0x000000
 }
 
 /**
@@ -83,11 +83,11 @@ enum HueInterpolationDirection {
        Shortest
 }
 //% weight=5 color=#ff8000 icon="\uf2db"
-//% groups="['Miscelaneo','Leds', 'Motores','Sonido','Sensores', 'Actuadores']"
+//% groups="['Miscellaneous','Leds', 'Motors','Buzzer','Sensors', 'Actuators']"
 namespace probots {
 
     /*************************************************
-     * motores 
+     * Motors 
      ******************************************************/
 
 
@@ -109,9 +109,9 @@ namespace probots {
         }
 
         //% weight=50
-        //% block="%motor| con direccion %dir| velocidad %speed"
+        //% block="%motor| on direction %dir| speed %speed"
         //% speed.min=0 speed.max=100
-        //% group="Motores"
+        //% group="Motors"
         motorOn(dir: DireccionMotor, speed: number): void {
             this.setVelocity(speed);
             switch (dir) {
@@ -127,8 +127,8 @@ namespace probots {
 
 
         }
-        //%block="%motor|apagar"
-        //% group="Motores"
+        //%block="%motor|turn off"
+        //% group="Motors"
         //% weight=20
         motorOff(): void {
             pins.digitalWritePin(this.pin1, 0);
@@ -197,9 +197,9 @@ namespace probots {
         }
     }
 
-    //%block="Probot en %cone=conexiones_ret"
+    //%block="Probot on %cone=conexiones_ret"
     //%blockSetVariable=motor
-    //% group="Motores"
+    //% group="Motors"
     //% weight=100
     export function createMotor(cone: any): Motor {
         let motor = new Motor();
@@ -213,12 +213,12 @@ namespace probots {
 
 
     /*****************************************
-     * Musica
+     * Music
      *******************************************/
     
 
-    //%block="reproducir frecuencia $frecuencia|por %duracion|ms en %cone=conexiones_ret"
-    //%group="Sonido"
+    //%block="Play frecuency $frecuencia|by %duracion|ms on %cone=conexiones_ret"
+    //%group="Buzzer"
     //% frecuencia.shadow="note_freq"
     export function reproducirTono(frecuencia: number, duracion: number, cone: any): void {
         pins.analogSetPitchPin(cone.P1)
@@ -227,8 +227,8 @@ namespace probots {
         pins.analogPitch(frequency, duration)
     }
 
-    //%block="reproducir melodia %melodyArray=devuelveMelodia en %cone=conexiones_ret"
-    //%group="Sonido"
+    //%block="Play melody %melodyArray=devuelveMelodia on %cone=conexiones_ret"
+    //%group="Buzzer"
     export function beginMelody(melodyArray: string[], cone: any) {
         pins.analogSetPitchPin(cone.P1)
         music.beginMelody(melodyArray, MelodyOptions.Once)
@@ -241,8 +241,8 @@ namespace probots {
      * INFRARROJO
      * 
      */
-    //%block="Infrarrojo en %cone=conexiones_ret"
-    //%group="Sensores"
+    //%block="Infrared on %cone=conexiones_ret"
+    //%group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function infrarrojo2(cone: any): number {
         return pins.digitalReadPin(cone.P0);
@@ -251,7 +251,7 @@ namespace probots {
     /*
         LED BICOLOR
     */
-    //%block="LED  bicolor en %cone=conexiones_ret| mostrar como %est"
+    //%block="LED  bicolor on %cone=conexiones_ret| show as %est"
     //%group="Leds"
     export function bicolor(cone: any, est: Estados_bicolor) {
         switch (est) {
@@ -276,7 +276,7 @@ namespace probots {
 
     
 
-    //%block="Probot en $pin=conexiones_ret| de $cantidad_leds|leds"
+    //%block="Probot on $pin=conexiones_ret| of $cantidad_leds|leds"
     //%cantidad_leds.defl=8
     //%blockSetVariable=leds_neopixel
     //%group="Leds"
@@ -295,7 +295,7 @@ namespace probots {
        return strip;
        
    }
-  //% block="$leds=variables_get(leds_neopixel)|mostrar color %rgb=colores_probot" 
+  //% block="$leds=variables_get(leds_neopixel)|show color %rgb=colores_probot" 
    //% group="Leds"
    //% weight=80
    export function showColor(leds: Strip, rgb: number) {
@@ -347,28 +347,28 @@ namespace probots {
         return b;
     }
 
-    // block="Potenciometro en $con=conexiones_ret"
-    // group="Sensores"
+    // block="Potentiometer on $con=conexiones_ret"
+    // group="Sensors"
     export function potenciometro(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
 
 
     // block="Luz en $con=conexiones_ret"
-    // group="Sensores"
+    // group="Sensors"
 
     export function sensorLuz(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
 
-    // block="Sonido en $con=conexiones_ret"
+    // block="Buzzer en $con=conexiones_ret"
     export function sensorSonido(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
     /******************ULTRASONIDO
      */
-    //% blockId=sonar_ping block="Ultrasonido en %cone=conexiones_ret"
-    //% group="Sensores"
+    //% blockId=sonar_ping block="Ultrasound on %cone=conexiones_ret"
+    //% group="Sensors"
     //% inlineInputMode=inline
 
     export function ping(cone: any): number {
@@ -386,7 +386,7 @@ namespace probots {
     }
 
     // block="Servo $con=conexiones_ret|grados |%grados"
-    // group="Motores"
+    // group="Motors"
     // grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
         return pins.servoWritePin(getAnalogPin(con.P0), grados)
@@ -397,8 +397,8 @@ namespace probots {
      * PULSADOR
      * 
      */
-    //%block="Pulsador en %cone=conexiones_ret"
-    //%group="Actuadores"
+    //%block="Button on %cone=conexiones_ret"
+    //%group="Actuators"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function pulsador(cone: any): number {
         return pins.digitalReadPin(cone.P0);
@@ -409,39 +409,39 @@ namespace probots {
      * LASER
      * 
      
-    //%block="LASER en %cone=conexiones_ret"
-    //%group="Leds"
+    //block="LASER en %cone=conexiones_ret"
+    //group="Leds"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function laser(cone: any, estado: Estados_laser): number {
         return pins.digitalWritePin(cone.P0, estado);
     }*/
 
-     //%block="%col"
+    //%block="%col"
     //%blockId="conexiones_ret"
-    //% group="Miscelaneo"
+    //% group="Miscellaneous"
     //% weight=1
     export function conexiones_ret(col: conn): any {
         return digitalCon[col];
     }
 
-     //% blockId="colores_probot" block="%color"
-    //% group="Miscelaneo"
+    //% blockId="colores_probot" block="%color"
+    //% group="Miscellaneous"
     //% weight=2
     export function colors(color: Colores): number {
         return color;
     }
 
-    //%block="Matriz de leds activada $val"
+    //%block="Enable matrix of leds $val"
     //%val.shadow="toggleYesNo"
-    //%group="Miscelaneo"
+    //%group="Miscellaneous"
     //% weight=5
     export function activate_leds(val: boolean): void {
         val ? led.enable(true) : led.enable(false)
     }
 
-    //%block="melodia %melodia=Melodies"
+    //%block="Melody %melodia=Melodies"
     //%blockId=devuelveMelodia
-    //%group="Miscelaneo"
+    //%group="Miscellaneous"
     //% weight=3
     export function devuelveMelodia(melodia: Melodies): string[] {
         return music.builtInMelody(melodia)
@@ -454,12 +454,12 @@ namespace probots {
     //% nota.fieldEditor="note" note.defl="262"
     //% nota.fieldOptions.decompileLiterals=true
     //% useEnumVal=1
-    //% group="Miscelaneo"
+    //% group="Miscellaneous"
     //% weight=4
     export function noteFreq(nota: Note): number {
         return nota;
     }
-class Strip {
+    class Strip {
        buf: Buffer;
        pin: DigitalPin;
        // TODO: encode as bytes instead of 32bit
@@ -472,10 +472,10 @@ class Strip {
         * Shows all LEDs to a given color (range 0-255 for r, g, b).
         * @param rgb RGB color of the LED
         */
-       //% blockId="neopixel_set_strip_color" block="%strip|show color %rgb=neopixel_colors"
-       //% strip.defl=strip
-       //% weight=85 blockGap=8
-       //% parts="neopixel"
+       // blockId="neopixel_set_strip_color" block="%strip|show color %rgb=neopixel_colors"
+       // strip.defl=strip
+       // weight=85 blockGap=8
+       // parts="neopixel"
        showColor(rgb: number) {
            rgb = rgb >> 0;
            this.setAllRGB(rgb);
@@ -486,10 +486,10 @@ class Strip {
         * @param startHue the start hue value for the rainbow, eg: 1
         * @param endHue the end hue value for the rainbow, eg: 360
         */
-       //% blockId="neopixel_set_strip_rainbow" block="%strip|show rainbow from %startHue|to %endHue"
-       //% strip.defl=strip
-       //% weight=85 blockGap=8
-       //% parts="neopixel"
+       // blockId="neopixel_set_strip_rainbow" block="%strip|show rainbow from %startHue|to %endHue"
+       // strip.defl=strip
+       // weight=85 blockGap=8
+       // parts="neopixel"
        showRainbow(startHue: number = 1, endHue: number = 360) {
            if (this._length <= 0) return;
            startHue = startHue >> 0;
@@ -547,15 +547,15 @@ class Strip {
         * @param value current value to plot
         * @param high maximum value, eg: 255
         */
-       //% weight=84
-       //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
-       //% strip.defl=strip
-       //% icon="\uf080"
-       //% parts="neopixel"
+       // weight=84
+       // blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
+       // strip.defl=strip
+       // icon="\uf080"
+       // parts="neopixel"
        showBarGraph(value: number, high: number): void {
            if (high <= 0) {
                this.clear();
-               this.setPixelColor(0, Colores.Yellow1);
+               this.setPixelColor(0, Colores.Yellow);
                this.show();
                return;
            }
@@ -584,11 +584,11 @@ class Strip {
         * @param pixeloffset position of the NeoPixel in the strip
         * @param rgb RGB color of the LED
         */
-       //% blockId="neopixel_set_pixel_color" block="%strip|set pixel color at %pixeloffset|to %rgb=neopixel_colors"
-       //% strip.defl=strip
-       //% blockGap=8
-       //% weight=80
-       //% parts="neopixel" advanced=true
+       // blockId="neopixel_set_pixel_color" block="%strip|set pixel color at %pixeloffset|to %rgb=neopixel_colors"
+       // strip.defl=strip
+       // blockGap=8
+       // weight=80
+       // parts="neopixel" advanced=true
        setPixelColor(pixeloffset: number, rgb: number): void {
            this.setPixelRGB(pixeloffset >> 0, rgb >> 0);
        }
@@ -596,11 +596,11 @@ class Strip {
         * Sets the number of pixels in a matrix shaped strip
         * @param width number of pixels in a row
         */
-       //% blockId=neopixel_set_matrix_width block="%strip|set matrix width %width"
-       //% strip.defl=strip
-       //% blockGap=8
-       //% weight=5
-       //% parts="neopixel" advanced=true
+       // blockId=neopixel_set_matrix_width block="%strip|set matrix width %width"
+       // strip.defl=strip
+       // blockGap=8
+       // weight=5
+       // parts="neopixel" advanced=true
        setMatrixWidth(width: number) {
            this._matrixWidth = Math.min(this._length, width >> 0);
        }
@@ -611,10 +611,10 @@ class Strip {
         * @param y horizontal position
         * @param rgb RGB color of the LED
         */
-       //% blockId="neopixel_set_matrix_color" block="%strip|set matrix color at x %x|y %y|to %rgb=neopixel_colors"
-       //% strip.defl=strip
-       //% weight=4
-       //% parts="neopixel" advanced=true
+       // blockId="neopixel_set_matrix_color" block="%strip|set matrix color at x %x|y %y|to %rgb=neopixel_colors"
+       // strip.defl=strip
+       // weight=4
+       // parts="neopixel" advanced=true
        setMatrixColor(x: number, y: number, rgb: number) {
            if (this._matrixWidth <= 0) return; // not a matrix, ignore
            x = x >> 0;
@@ -630,11 +630,11 @@ class Strip {
         * @param pixeloffset position of the LED in the strip
         * @param white brightness of the white LED
         */
-       //% blockId="neopixel_set_pixel_white" block="%strip|set pixel white LED at %pixeloffset|to %white"
-       //% strip.defl=strip
-       //% blockGap=8
-       //% weight=80
-       //% parts="neopixel" advanced=true
+       // blockId="neopixel_set_pixel_white" block="%strip|set pixel white LED at %pixeloffset|to %white"
+       // strip.defl=strip
+       // blockGap=8
+       // weight=80
+       // parts="neopixel" advanced=true
        setPixelWhiteLED(pixeloffset: number, white: number): void {
            if (this._mode === NeoPixelMode.RGBW) {
                this.setPixelW(pixeloffset >> 0, white >> 0);
@@ -643,10 +643,10 @@ class Strip {
        /**
         * Send all the changes to the strip.
         */
-       //% blockId="neopixel_show" block="%strip|show" blockGap=8
-       //% strip.defl=strip
-       //% weight=79
-       //% parts="neopixel"
+       // blockId="neopixel_show" block="%strip|show" blockGap=8
+       // strip.defl=strip
+       // weight=79
+       // parts="neopixel"
        show() {
            // only supported in beta
            // ws2812b.setBufferMode(this.pin, this._mode);
@@ -656,10 +656,10 @@ class Strip {
         * Turn off all LEDs.
         * You need to call ``show`` to make the changes visible.
         */
-       //% blockId="neopixel_clear" block="%strip|clear"
-       //% strip.defl=strip
-       //% weight=76
-       //% parts="neopixel"
+       // blockId="neopixel_clear" block="%strip|clear"
+       // strip.defl=strip
+       // weight=76
+       // parts="neopixel"
        clear(): void {
            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
            this.buf.fill(0, this.start * stride, this._length * stride);
@@ -667,9 +667,9 @@ class Strip {
        /**
         * Gets the number of pixels declared on the strip
         */
-       //% blockId="neopixel_length" block="%strip|length" blockGap=8
-       //% strip.defl=strip
-       //% weight=60 advanced=true
+       // blockId="neopixel_length" block="%strip|length" blockGap=8
+       // strip.defl=strip
+       // weight=60 advanced=true
        length() {
            return this._length;
        }
@@ -677,20 +677,20 @@ class Strip {
         * Set the brightness of the strip. This flag only applies to future operation.
         * @param brightness a measure of LED brightness in 0-255. eg: 255
         */
-       //% blockId="neopixel_set_brightness" block="%strip|set brightness %brightness" blockGap=8
-       //% strip.defl=strip
-       //% weight=59
-       //% parts="neopixel" advanced=true
+       // blockId="neopixel_set_brightness" block="%strip|set brightness %brightness" blockGap=8
+       // strip.defl=strip
+       // weight=59
+       // parts="neopixel" advanced=true
        setBrightness(brightness: number): void {
            this.brightness = brightness & 0xff;
        }
        /**
         * Apply brightness to current colors using a quadratic easing function.
         **/
-       //% blockId="neopixel_each_brightness" block="%strip|ease brightness" blockGap=8
-       //% strip.defl=strip
-       //% weight=58
-       //% parts="neopixel" advanced=true
+       // blockId="neopixel_each_brightness" block="%strip|ease brightness" blockGap=8
+       // strip.defl=strip
+       // weight=58
+       // parts="neopixel" advanced=true
        easeBrightness(): void {
            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
            const br = this.brightness;
@@ -716,11 +716,11 @@ class Strip {
         * @param start offset in the LED strip to start the range
         * @param length number of LEDs in the range. eg: 4
         */
-       //% weight=89
-       //% blockId="neopixel_range" block="%strip|range from %start|with %length|leds"
-       //% strip.defl=strip
-       //% parts="neopixel"
-       //% blockSetVariable=range
+       // weight=89
+       // blockId="neopixel_range" block="%strip|range from %start|with %length|leds"
+       // strip.defl=strip
+       // parts="neopixel"
+       // blockSetVariable=range
        range(start: number, length: number): Strip {
            start = start >> 0;
            length = length >> 0;
@@ -739,10 +739,10 @@ class Strip {
         * You need to call ``show`` to make the changes visible.
         * @param offset number of pixels to shift forward, eg: 1
         */
-       //% blockId="neopixel_shift" block="%strip|shift pixels by %offset" blockGap=8
-       //% strip.defl=strip
-       //% weight=40
-       //% parts="neopixel"
+       // blockId="neopixel_shift" block="%strip|shift pixels by %offset" blockGap=8
+       // strip.defl=strip
+       // weight=40
+       // parts="neopixel"
        shift(offset: number = 1): void {
            offset = offset >> 0;
            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
@@ -753,10 +753,10 @@ class Strip {
         * You need to call ``show`` to make the changes visible.
         * @param offset number of pixels to rotate forward, eg: 1
         */
-       //% blockId="neopixel_rotate" block="%strip|rotate pixels by %offset" blockGap=8
-       //% strip.defl=strip
-       //% weight=39
-       //% parts="neopixel"
+       // blockId="neopixel_rotate" block="%strip|rotate pixels by %offset" blockGap=8
+       // strip.defl=strip
+       // weight=39
+       // parts="neopixel"
        rotate(offset: number = 1): void {
            offset = offset >> 0;
            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
@@ -765,8 +765,8 @@ class Strip {
        /**
         * Set the pin where the neopixel is connected, defaults to P0.
         */
-       //% weight=10
-       //% parts="neopixel" advanced=true
+       // weight=10
+       // parts="neopixel" advanced=true
        setPin(pin: DigitalPin): void {
            this.pin = pin;
            pins.digitalWritePin(this.pin, 0);
@@ -775,9 +775,9 @@ class Strip {
        /**
         * Estimates the electrical current (mA) consumed by the current light configuration.
         */
-       //% weight=9 blockId=neopixel_power block="%strip|power (mA)"
-       //% strip.defl=strip
-       //% advanced=true
+       // weight=9 blockId=neopixel_power block="%strip|power (mA)"
+       // strip.defl=strip
+       // advanced=true
        power(): number {
            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
            const end = this.start + this._length;
