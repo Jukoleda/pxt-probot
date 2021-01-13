@@ -9,7 +9,6 @@
     "files": [
         "README.md",
         "probot.ts",
-        "_locales/en/probots-strings.json",
         "_locales/es/probots-strings.json"
     ],
     "testFiles": [
