@@ -39,9 +39,13 @@ enum DireccionMotor {
 }
 
 enum Estados_bicolor {
+    //% block="Red"
     Rojo = 1,
+    //% block="Yellow"
     Amarillo,
+    //% block="Green"
     Verde,
+    //% block="Turn off"
     Apagado
 }
 
