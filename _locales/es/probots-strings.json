@@ -37,10 +37,10 @@
     "probots|block": "Probots",
     "{id:category}Probots": "Probots",
     "{id:category}Ws2812bj": "Ws2812bj",
-    "{id:group}Actuadores": "Actuadores",
+    "{id:group}Actuators": "Actuadores",
     "{id:group}Buzzer": "Sonido",
     "{id:group}Leds": "Leds",
-    "{id:group}Miscelaneo": "Miscelaneo",
-    "{id:group}Motores": "Motores",
-    "{id:group}Sensores": "Sensores"
+    "{id:group}Miscellaneous": "Miscelaneo",
+    "{id:group}Motors": "Motores",
+    "{id:group}Sensors": "Sensores"
 }

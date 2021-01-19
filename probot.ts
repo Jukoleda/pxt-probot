@@ -389,9 +389,9 @@ namespace probots {
         return Math.idiv(d, 58);
     }
 
-    // block="Servo $con=conexiones_ret|grados |%grados"
-    // group="Motors"
-    // grados.min=0 grados.max=180
+    //% block="Servo $con=conexiones_ret|grados |%grados"
+    //% group="Motors"
+    //% grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
         return pins.servoWritePin(getAnalogPin(con.P0), grados)
     }
