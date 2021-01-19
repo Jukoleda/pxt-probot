@@ -389,7 +389,7 @@ namespace probots {
         return Math.idiv(d, 58);
     }
 
-    //% block="Servo $con=conexiones_ret|grados |%grados"
+    //% block="Servo $con=conexiones_ret|degrees |%grados"
     //% group="Motors"
     //% grados.min=0 grados.max=180
     export function servoProbot(con: any, grados: number) {
