@@ -40,13 +40,13 @@ enum DireccionMotor {
 
 enum Estados_bicolor {
     //% block="Red"
-    Rojo = 1,
+    Red = 1,
     //% block="Yellow"
-    Amarillo,
+    Yellow,
     //% block="Green"
-    Verde,
+    Green,
     //% block="Turn off"
-    Apagado
+    Black
 }
 
 enum Colores {
@@ -259,19 +259,19 @@ namespace probots {
     //%group="Leds"
     export function bicolor(cone: any, est: Estados_bicolor) {
         switch (est) {
-            case Estados_bicolor.Apagado:
+            case Estados_bicolor.Black:
                 pins.digitalWritePin(cone.P0, 0);
                 pins.digitalWritePin(cone.P1, 0);
                 break;
-            case Estados_bicolor.Rojo:
+            case Estados_bicolor.Red:
                 pins.digitalWritePin(cone.P0, 1);
                 pins.digitalWritePin(cone.P1, 0);
                 break;
-            case Estados_bicolor.Amarillo:
+            case Estados_bicolor.Yellow:
                 pins.digitalWritePin(cone.P0, 1);
                 pins.digitalWritePin(cone.P1, 1);
                 break;
-            case Estados_bicolor.Verde:
+            case Estados_bicolor.Green:
                 pins.digitalWritePin(cone.P0, 0);
                 pins.digitalWritePin(cone.P1, 1);
                 break;

@@ -1,8 +1,8 @@
 {
-    "Estados_bicolor.Rojo" : "Rojo",
-    "Estados_bicolor.Amarillo": "Amarillo",
-    "Estados_bicolor.Verde": "Verde",
-    "Estados_bicolor.Apagado": "Apagado",
+    "Estados_bicolor.Red" : "Rojo",
+    "Estados_bicolor.Yellow": "Amarillo",
+    "Estados_bicolor.Green": "Verde",
+    "Estados_bicolor.Black": "Apagado",
     "Colores.Black1|block": "negro",
     "Colores.Blue1|block": "azul",
     "Colores.Green1|block": "verde",
