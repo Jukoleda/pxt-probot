@@ -9,6 +9,16 @@ enum conn {
     CON7,//p13 p14
     CON8//p15 p11
 }
+
+//conexiones
+enum conn_a {
+    CON1 = 1,//p8 p0
+    CON2,//p12 p1
+    CON3,//p16 p2
+    CON4,//p6 p3
+    CON5,//p7 p4
+    CON6,//p9 p10
+}
 //Comentario 1
 //puertos de conexion para la interfaz de misladrillos
 //si se necesitan analogicos usar getAnalogPin(DP)
@@ -22,6 +32,16 @@ let digitalCon: any = {
     6: { P0: DigitalPin.P9, P1: DigitalPin.P10 },
     7: { P0: DigitalPin.P13, P1: DigitalPin.P14 },
     8: { P0: DigitalPin.P15, P1: DigitalPin.P11 }
+}
+
+//Analog connectors 1, 2, 3, 4, 5, 6
+let analogCon: any = {
+    1: {P0: AnalogPin.P0}
+    ,2: {P0: AnalogPin.P1}
+    ,3: {P0: AnalogPin.P2}
+    ,4: {P0: AnalogPin.P3}
+    ,5: {P0: AnalogPin.P4}
+    ,6: {P0: AnalogPin.P10}
 }
 
 /*
@@ -245,11 +265,23 @@ namespace probots {
      * INFRARROJO
      * 
      */
-    //%block="Infrared on %cone=conexiones_ret"
+    //%block="Binary Infrared on %cone=conexiones_ret"
     //%group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function infrarrojo2(cone: any): number {
         return pins.digitalReadPin(cone.P0);
+    }
+
+    /**
+     * 
+     * INFRARROJO
+     * 
+     */
+    //%block="Infrared on %cone=conexiones_ret_a"
+    //%group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function infrarrojo(cone: any): number {
+        return pins.analogReadPin(cone.P0);
     }
 
     /*
@@ -426,6 +458,14 @@ namespace probots {
     //% weight=1
     export function conexiones_ret(col: conn): any {
         return digitalCon[col];
+    }
+
+    //%block="%col"
+    //%blockId="conexiones_ret_a"
+    //% group="Miscellaneous"
+    //% weight=1
+    export function conexiones_ret_a(col: conn_a): any {
+        return analogCon[col];
     }
 
     //% blockId="colores_probot" block="%color"
