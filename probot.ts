@@ -11,14 +11,14 @@ enum conn {
 }
 
 //conexiones
-enum conn_a {
+/*enum conn_a {
     CON1 = 1,//p8 p0
     CON2,//p12 p1
     CON3,//p16 p2
     CON4,//p6 p3
     CON5,//p7 p4
     CON6,//p9 p10
-}
+}*/
 //Comentario 1
 //puertos de conexion para la interfaz de misladrillos
 //si se necesitan analogicos usar getAnalogPin(DP)
@@ -35,7 +35,7 @@ let digitalCon: any = {
 }
 
 //Analog connectors 1, 2, 3, 4, 5, 6
-let analogCon: any = {
+/*let analogCon: any = {
     1: {P0: AnalogPin.P0}
     ,2: {P0: AnalogPin.P1}
     ,3: {P0: AnalogPin.P2}
@@ -43,7 +43,7 @@ let analogCon: any = {
     ,5: {P0: AnalogPin.P4}
     ,6: {P0: AnalogPin.P10}
 }
-
+*/
 /*
 //puertos de conexion para el gigglebot
 let digitalCon: any = {//11 16 10 7
@@ -265,25 +265,14 @@ namespace probots {
      * INFRARROJO
      * 
      */
-    //%block="Binary Infrared on %cone=conexiones_ret"
-    //%group="Sensors"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function infrarrojo2(cone: any): number {
-        return pins.digitalReadPin(cone.P0);
-    }
-
-    /**
-     * 
-     * INFRARROJO
-     * 
-     */
-    //%block="Infrared on %cone=conexiones_ret_a"
+    //%block="Infrared on %cone=conexiones_ret"
     //%group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function infrarrojo(cone: any): number {
-        return pins.analogReadPin(cone.P0);
+        return pins.digitalReadPin(cone.P0);
     }
 
+    
     /*
         LED BICOLOR
     */
@@ -390,9 +379,8 @@ namespace probots {
     }
 
 
-    // block="Luz en $con=conexiones_ret"
-    // group="Sensors"
-
+    //% block="Light on $con=conexiones_ret"
+    //% group="Sensors"
     export function sensorLuz(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
@@ -460,13 +448,13 @@ namespace probots {
         return digitalCon[col];
     }
 
-    //%block="%col"
-    //%blockId="conexiones_ret_a"
-    //% group="Miscellaneous"
-    //% weight=1
-    export function conexiones_ret_a(col: conn_a): any {
+    // block="%col"
+    // blockId="conexiones_ret_a"
+    // group="Miscellaneous"
+    // weight=1
+    /*export function conexiones_ret_a(col: conn_a): any {
         return analogCon[col];
-    }
+    }*/
 
     //% blockId="colores_probot" block="%color"
     //% group="Miscellaneous"
@@ -503,6 +491,7 @@ namespace probots {
     export function noteFreq(nota: Note): number {
         return nota;
     }
+    //based on neopixel extension
     class Strip {
        buf: Buffer;
        pin: DigitalPin;
