@@ -404,6 +404,20 @@ namespace probots {
         return pins.analogReadPin(getAnalogPin(con.P1))
     }
 
+    //% block="Read $times| times the light on $con=conexiones_ret"
+    //% group="Sensors"
+    //% times.defl=10
+    export function sensorLuz_cantidad(times: number, con: any): number {
+        let temp = 0.0;
+        let a = 0;
+        for(a = 0; a < times; a++){
+            temp += pins.analogReadPin(getAnalogPin(con.P1));
+        }
+        temp /= times;
+        return Math.round(temp);
+    }
+
+
     // block="Buzzer en $con=conexiones_ret"
     export function sensorSonido(con: any): number {
         return pins.analogReadPin(getAnalogPin(con.P1))

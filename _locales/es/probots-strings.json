@@ -39,6 +39,7 @@
     "probots.pulsador|block": "Pulsador en %cone=conexiones_ret",
     "probots.reproducirTono|block": "Reproducir frecuencia $frecuencia|por %duracion|ms en %cone=conexiones_ret",
     "probots.sensorLuz|block": "Sensor de luz en $con=conexiones_ret",
+    "probots.sensorLuz_cantidad|block": "Leer $times| veces la luz en $con=conexiones_ret",
     "probots.sensorSonido|block": "Sonido en $con=conexiones_ret",
     "probots.servoProbot|block": "Servo $con=conexiones_ret|grados |%grados",
     "probots.showColor|block": "$leds=variables_get(leds_neopixel)|mostrar color %rgb=colores_probot",
