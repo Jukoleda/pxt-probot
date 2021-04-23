@@ -959,8 +959,8 @@ namespace probots {
      * RGB LED
      * 
      */
-    //%block="RGB LED on CONN 7 show color %color=colores_rgb"
-    //%group="Sensors"
+    //% block="RGB LED on CONN 7 show color %color=colores_rgb"
+    //% group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function rgb_led(color: Colores_rgb) {
         switch(color){
@@ -1009,7 +1009,61 @@ namespace probots {
         return
     }
 
-
+    /*
+     * 
+     * RGB LED
+     * 
+     */
+    //% block="RGB LED on CONN 7 show color %color=colores_rgb by %duracion|ms"
+    //% group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function rgb_led_time(color: Colores_rgb, duracion: number) {
+        switch(color){
+            case Colores_rgb.Black: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.White: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Red: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Green: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Blue: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Orange: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Violet: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Cyan: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            default: break;
+        }
+        basic.pause(duracion);
+        return
+    }
 
 }
 
