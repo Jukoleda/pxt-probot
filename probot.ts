@@ -90,6 +90,25 @@ enum Colores {
     Black = 0x000000
 }
 
+enum Colores_rgb {
+    //% block=red
+    Red,
+    //% block=green
+    Green,
+    //% block=blue
+    Blue,
+    //% block=orange
+    Orange,
+    //% block=violet
+    Violet,
+    //% block=cyan
+    Cyan,
+    //% block=white
+    White,
+    //% block=black
+    Black
+}
+
 /**
 * Different modes for RGB or RGB+W NeoPixel strips
 */
@@ -320,10 +339,10 @@ namespace probots {
        return strip;
        
    }
-  //% block="$leds=variables_get(leds_neopixel)|show color %rgb=colores_probot" 
+  //% block="$leds=variables_get(leds_neopixel)|show color %rgb=Colores" 
    //% group="Leds"
    //% weight=80
-   export function showColor(leds: Strip, rgb: number) {
+   export function showColor(leds: Strip, rgb: Colores) {
        rgb = rgb >> 0;
        setAllRGB(leds, rgb);
        leds.show();
@@ -440,8 +459,8 @@ namespace probots {
         return pins.digitalWritePin(cone.P0, estado);
     }*/
 
-    //%block="%col"
-    //%blockId="conexiones_ret"
+    //% block="%col"
+    //% blockId="conexiones_ret"
     //% group="Miscellaneous"
     //% weight=1
     export function conexiones_ret(col: conn): any {
@@ -456,9 +475,9 @@ namespace probots {
         return analogCon[col];
     }*/
 
-    //% blockId="colores_probot" block="%color"
-    //% group="Miscellaneous"
-    //% weight=2
+    // blockId="colores_probot" block="%color"
+    // group="Miscellaneous"
+    // weight=2
     export function colors(color: Colores): number {
         return color;
     }
@@ -933,6 +952,65 @@ namespace probots {
    function rgb(red: number, green: number, blue: number): number {
        return packRGB(red, green, blue);
    }
+    
+   
+    /*
+     * 
+     * RGB LED
+     * 
+     */
+    //%block="RGB LED on CONN 7 show color %color=colores_rgb"
+    //%group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function rgb_led(color: Colores_rgb) {
+        switch(color){
+            case Colores_rgb.Black: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.White: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Red: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Green: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Blue: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Orange: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 0);
+                break;
+            case Colores_rgb.Violet: 
+                pins.digitalWritePin(DigitalPin.P15, 1);
+                pins.digitalWritePin(DigitalPin.P14, 0);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            case Colores_rgb.Cyan: 
+                pins.digitalWritePin(DigitalPin.P15, 0);
+                pins.digitalWritePin(DigitalPin.P14, 1);
+                pins.digitalWritePin(DigitalPin.P13, 1);
+                break;
+            default: break;
+        }
+        return
+    }
+
+
+
 }
 
 
