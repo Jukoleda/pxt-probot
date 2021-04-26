@@ -8,7 +8,43 @@ enum conn {
     CON6,//p9 p10
     CON7,//p13 p14
     CON8//p15 p11
+};
+
+enum Names_rgb {
+    //% block="Red"
+    Red = 0,
+    //% block="Green"
+    Green,
+    //% block="Blue"
+    Blue
+};
+
+enum Names_colors {
+    //% block="White"
+    White = 0,
+    //% block="Black"
+    Black,
+    //% block="Brown"
+    Brown,
+    //% block="Red"
+    Red,
+    //% block="Green"
+    Green,
+    //% block="Blue"
+    Blue,
+    //% block="Violet"
+    Violet,
+    //% block="Yellow"
+    Yellow,
+    //% block="Gray"
+    Gray 
 }
+
+let valueColors: number [][] = [
+    [0,0,0,0,0,0,0,0,0]
+    ,[0,0,0,0,0,0,0,0,0]
+    ,[0,0,0,0,0,0,0,0,0]
+];
 
 //conexiones
 /*enum conn_a {
@@ -69,7 +105,7 @@ enum Estados_bicolor {
     Black
 }
 
-enum Colores {
+enum Colors {
     //% block=red
     Red = 0xFF0000,
     //% block=orange
@@ -90,9 +126,9 @@ enum Colores {
     Black = 0x000000
 }
 
-enum Colores_rgb {
+enum Colors_rgb {
     //% block=red
-    Red,
+    Red = 0,
     //% block=green
     Green,
     //% block=blue
@@ -342,7 +378,7 @@ namespace probots {
   //% block="$leds=variables_get(leds_neopixel)|show color %rgb=Colores" 
    //% group="Leds"
    //% weight=80
-   export function showColor(leds: Strip, rgb: Colores) {
+   export function showColor(leds: Strip, rgb: Colors) {
        rgb = rgb >> 0;
        setAllRGB(leds, rgb);
        leds.show();
@@ -492,7 +528,7 @@ namespace probots {
     // blockId="colores_probot" block="%color"
     // group="Miscellaneous"
     // weight=2
-    export function colors(color: Colores): number {
+    export function colors(color: Colors): number {
         return color;
     }
 
@@ -621,7 +657,7 @@ namespace probots {
        showBarGraph(value: number, high: number): void {
            if (high <= 0) {
                this.clear();
-               this.setPixelColor(0, Colores.Yellow);
+               this.setPixelColor(0, Colors.Yellow);
                this.show();
                return;
            }
@@ -976,44 +1012,44 @@ namespace probots {
     //% block="RGB LED on CONN 7 show color %color=colores_rgb"
     //% group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function rgb_led(color: Colores_rgb) {
+    export function rgb_led(color: Colors_rgb) {
         switch(color){
-            case Colores_rgb.Black: 
+            case Colors_rgb.Black: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.White: 
+            case Colors_rgb.White: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Red: 
+            case Colors_rgb.Red: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Green: 
+            case Colors_rgb.Green: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Blue: 
+            case Colors_rgb.Blue: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Orange: 
+            case Colors_rgb.Orange: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Violet: 
+            case Colors_rgb.Violet: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Cyan: 
+            case Colors_rgb.Cyan: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 1);
@@ -1031,44 +1067,44 @@ namespace probots {
     //% block="RGB LED on CONN 7 show color %color=colores_rgb by %duracion|ms"
     //% group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function rgb_led_time(color: Colores_rgb, duracion: number) {
+    export function rgb_led_time(color: Colors_rgb, duracion: number) {
         switch(color){
-            case Colores_rgb.Black: 
+            case Colors_rgb.Black: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.White: 
+            case Colors_rgb.White: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Red: 
+            case Colors_rgb.Red: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Green: 
+            case Colors_rgb.Green: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Blue: 
+            case Colors_rgb.Blue: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Orange: 
+            case Colors_rgb.Orange: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 0);
                 break;
-            case Colores_rgb.Violet: 
+            case Colors_rgb.Violet: 
                 pins.digitalWritePin(DigitalPin.P15, 1);
                 pins.digitalWritePin(DigitalPin.P14, 0);
                 pins.digitalWritePin(DigitalPin.P13, 1);
                 break;
-            case Colores_rgb.Cyan: 
+            case Colors_rgb.Cyan: 
                 pins.digitalWritePin(DigitalPin.P15, 0);
                 pins.digitalWritePin(DigitalPin.P14, 1);
                 pins.digitalWritePin(DigitalPin.P13, 1);
@@ -1079,6 +1115,111 @@ namespace probots {
         return
     }
 
+  
+
+    /*
+     * 
+     * RGB LED
+     * 
+     */
+    //% block="Get color RGB %typeColor=Names_rgb color %color=Names_colors"
+    //% group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function getColorValue(typeColor: Names_rgb, color: Names_colors): number {
+        return valueColors[typeColor][color];
+    }
+
+/*
+     * 
+     * RGB LED
+     * 
+     */
+    //% block="Is in range %toEval| to eval in %centralValue| value with %offset| of offset"
+    //% group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function isInRange(toEval: number, centralValue: number, offset: number): boolean{
+        return ((toEval < centralValue + offset) && (toEval > centralValue - offset));
+    }
+
+/*
+     * 
+     * RGB LED
+     * 
+     */
+    //% block="Get color red %red green %green blue %blue"
+    //% group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function getColor(red: number, green: number, blue: number): string {
+        if(red == green && red == blue)
+        return getColorString(red);
+        
+        if(red == green || red == blue)
+        return getColorString(red);
+
+        if(green == red || green == blue)
+        return getColorString(green);
+
+        if(blue == green || blue == red)
+        return getColorString(blue);
+
+        return "U";
+    }
+
+    function getColorString(color: number): string{
+        switch(color){
+            case 1: return "Black"; break;
+            case 5: return "Blue"; break;
+            case 2: return "Brown"; break;
+            case 0: return "White"; break;
+            case 6: return "Violet"; break;
+            case 3: return "Red"; break;
+            case 4: return "Green"; break;
+            case 8: return "Gray"; break;
+            case 7: return "Yellow"; break;
+            default: return "NR"; break;
+        }
+    }
+  /*
+     * 
+     * RGB LED
+     * 
+     */
+    //% block="Set default colors values"
+    //% group="Sensors"
+    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
+    export function setDefaultColorSensorValues(){
+
+        valueColors[Names_rgb.Red][Names_colors.White] = 170;
+        valueColors[Names_rgb.Red][Names_colors.Black] = 13;
+        valueColors[Names_rgb.Red][Names_colors.Brown] = 29;
+        valueColors[Names_rgb.Red][Names_colors.Red] = 140;
+        valueColors[Names_rgb.Red][Names_colors.Green] = 16;
+        valueColors[Names_rgb.Red][Names_colors.Blue] = 18;
+        valueColors[Names_rgb.Red][Names_colors.Violet] = 57;
+        valueColors[Names_rgb.Red][Names_colors.Yellow] = 200;
+        valueColors[Names_rgb.Red][Names_colors.Gray] = 26;
+
+        valueColors[Names_rgb.Green][Names_colors.White] = 129;
+        valueColors[Names_rgb.Green][Names_colors.Black] = 13;
+        valueColors[Names_rgb.Green][Names_colors.Brown] = 15;
+        valueColors[Names_rgb.Green][Names_colors.Red] = 17;
+        valueColors[Names_rgb.Green][Names_colors.Green] = 52;
+        valueColors[Names_rgb.Green][Names_colors.Blue] = 45;
+        valueColors[Names_rgb.Green][Names_colors.Violet] = 16;
+        valueColors[Names_rgb.Green][Names_colors.Yellow] = 110;
+        valueColors[Names_rgb.Green][Names_colors.Gray] = 25;
+
+        valueColors[Names_rgb.Blue][Names_colors.White] = 55;
+        valueColors[Names_rgb.Blue][Names_colors.Black] = 7;
+        valueColors[Names_rgb.Blue][Names_colors.Brown] = 8;
+        valueColors[Names_rgb.Blue][Names_colors.Red] = 9;
+        valueColors[Names_rgb.Blue][Names_colors.Green] = 9;
+        valueColors[Names_rgb.Blue][Names_colors.Blue] = 33;
+        valueColors[Names_rgb.Blue][Names_colors.Violet] = 10;
+        valueColors[Names_rgb.Blue][Names_colors.Yellow] = 20;
+        valueColors[Names_rgb.Blue][Names_colors.Gray] = 12;
+
+    }
 }
 
 
