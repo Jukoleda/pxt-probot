@@ -22,8 +22,6 @@ enum Names_rgb {
 enum Names_colors {
     //% block="White"
     White = 0,
-    //% block="Black"
-    Black,
     //% block="Brown"
     Brown,
     //% block="Red"
@@ -37,7 +35,9 @@ enum Names_colors {
     //% block="Yellow"
     Yellow,
     //% block="Gray"
-    Gray 
+    Gray,
+    //% block="Black"
+    Black
 }
 
 let valueColors: number [][] = [
@@ -1129,16 +1129,48 @@ namespace probots {
         return valueColors[typeColor][color];
     }
 
-/*
-     * 
-     * RGB LED
-     * 
-     */
-    //% block="Is in range %toEval| to eval in %centralValue| value with %offset| of offset"
-    //% group="Sensors"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function isInRange(toEval: number, centralValue: number, offset: number): boolean{
+
+    function isInRange(toEval: number, centralValue: number, offset: number): boolean{
         return ((toEval < centralValue + offset) && (toEval > centralValue - offset));
+    }
+
+    function redLayer(toEval: number): number {
+
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Yellow], 3)) return 6;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.White], 3)) return 0;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Red], 3)) return 2;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Violet], 3)) return 5;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Brown], 3)) return 1;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Gray], 3)) return 7;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Blue], 3)) return 4;
+        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Green], 3)) return 3;
+        if(toEval < valueColors[Names_rgb.Red][Names_colors.Green] - 3) return 8;
+        return 9;
+    }
+     function greenLayer(toEval: number): number {
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.White], 3)) return 0;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Yellow], 3)) return 6;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Green], 3)) return 3;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Blue], 3)) return 4;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Gray], 3)) return 7;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Red], 3)) return 2;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Violet], 3)) return 5;
+        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Brown], 3)) return 1;
+        if(toEval < valueColors[Names_rgb.Green][Names_colors.Brown] - 3) return 8;
+        return 9;
+    }
+
+    function blueLayer(toEval: number): number {
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.White], 3)) return 0;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Blue], 3)) return 4;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Yellow], 3)) return 6;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Gray], 3)) return 7;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Violet], 3)) return 5;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Red], 3)) return 2;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Green], 3)) return 3;
+        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Brown], 3)) return 1;
+        if(toEval < valueColors[Names_rgb.Blue][Names_colors.Brown] - 3) return 8;
+        return 9;
     }
 
 /*
@@ -1146,10 +1178,26 @@ namespace probots {
      * RGB LED
      * 
      */
-    //% block="Get color red %red green %green blue %blue"
+    //% block="Get color"
     //% group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function getColor(red: number, green: number, blue: number): string {
+    export function getColor(): string {
+        rgb_led_time(Colors_rgb.Red, 2500);
+        let toEvalRed = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
+        
+        rgb_led_time(Colors_rgb.Green, 2500);
+        let toEvalGreen = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
+        
+        rgb_led_time(Colors_rgb.Blue, 2500);
+        let toEvalBlue = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
+        
+        rgb_led(Colors_rgb.Black);
+        
+        let red = redLayer(toEvalRed);
+        let green = greenLayer(toEvalGreen);
+        let blue = blueLayer(toEvalBlue);
+
+
         if(red == green && red == blue)
         return getColorString(red);
         
@@ -1167,16 +1215,16 @@ namespace probots {
 
     function getColorString(color: number): string{
         switch(color){
-            case 1: return "Black"; break;
-            case 5: return "Blue"; break;
-            case 2: return "Brown"; break;
+            case 8: return "Black"; break;
+            case 4: return "Blue"; break;
+            case 1: return "Brown"; break;
             case 0: return "White"; break;
-            case 6: return "Violet"; break;
-            case 3: return "Red"; break;
-            case 4: return "Green"; break;
-            case 8: return "Gray"; break;
-            case 7: return "Yellow"; break;
-            default: return "NR"; break;
+            case 5: return "Violet"; break;
+            case 2: return "Red"; break;
+            case 3: return "Green"; break;
+            case 7: return "Gray"; break;
+            case 6: return "Yellow"; break;
+            default: return "N"; break;
         }
     }
   /*
@@ -1188,37 +1236,56 @@ namespace probots {
     //% group="Sensors"
     // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
     export function setDefaultColorSensorValues(){
+        //porcentajes rojos
+        //100, 87, 70, 30, 15, 14, 12, 8
+        rgb_led_time(Colors_rgb.Red, 2500);
+        let rojo = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
+        
 
-        valueColors[Names_rgb.Red][Names_colors.White] = 170;
-        valueColors[Names_rgb.Red][Names_colors.Black] = 13;
-        valueColors[Names_rgb.Red][Names_colors.Brown] = 29;
-        valueColors[Names_rgb.Red][Names_colors.Red] = 140;
-        valueColors[Names_rgb.Red][Names_colors.Green] = 16;
-        valueColors[Names_rgb.Red][Names_colors.Blue] = 18;
-        valueColors[Names_rgb.Red][Names_colors.Violet] = 57;
-        valueColors[Names_rgb.Red][Names_colors.Yellow] = 200;
-        valueColors[Names_rgb.Red][Names_colors.Gray] = 26;
+        //porcentajes verdes
+        //100, 84, 40, 38, 20, 14, 14, 12
+        rgb_led_time(Colors_rgb.Green, 2500);
+        let verde = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
+        
+        //porcentajes azules
+        //100, 61, 31, 21, 20, 16, 16, 15
+        rgb_led_time(Colors_rgb.Blue, 2500);
+        let azul = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
+        
+        function getValueFromPercentage(percentage: number, topValue: number){
+            return (percentage / 100) * topValue;
+        }
+        rgb_led(Colors_rgb.Black);
 
-        valueColors[Names_rgb.Green][Names_colors.White] = 129;
-        valueColors[Names_rgb.Green][Names_colors.Black] = 13;
-        valueColors[Names_rgb.Green][Names_colors.Brown] = 15;
-        valueColors[Names_rgb.Green][Names_colors.Red] = 17;
-        valueColors[Names_rgb.Green][Names_colors.Green] = 52;
-        valueColors[Names_rgb.Green][Names_colors.Blue] = 45;
-        valueColors[Names_rgb.Green][Names_colors.Violet] = 16;
-        valueColors[Names_rgb.Green][Names_colors.Yellow] = 110;
-        valueColors[Names_rgb.Green][Names_colors.Gray] = 25;
+        valueColors[Names_rgb.Red][Names_colors.White] = rojo;
+        //valueColors[Names_rgb.Red][Names_colors.Black] = getValueFromPercentage(87, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Brown] = getValueFromPercentage(14, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Red] = getValueFromPercentage(63, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Green] = getValueFromPercentage(8, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Blue] = getValueFromPercentage(9, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Violet] = getValueFromPercentage(29, rojo);
+        valueColors[Names_rgb.Red][Names_colors.Yellow] = rojo = (rojo * 100) / 80;
+        valueColors[Names_rgb.Red][Names_colors.Gray] = getValueFromPercentage(13, rojo);
 
-        valueColors[Names_rgb.Blue][Names_colors.White] = 55;
-        valueColors[Names_rgb.Blue][Names_colors.Black] = 7;
-        valueColors[Names_rgb.Blue][Names_colors.Brown] = 8;
-        valueColors[Names_rgb.Blue][Names_colors.Red] = 9;
-        valueColors[Names_rgb.Blue][Names_colors.Green] = 9;
-        valueColors[Names_rgb.Blue][Names_colors.Blue] = 33;
-        valueColors[Names_rgb.Blue][Names_colors.Violet] = 10;
-        valueColors[Names_rgb.Blue][Names_colors.Yellow] = 20;
-        valueColors[Names_rgb.Blue][Names_colors.Gray] = 12;
+        valueColors[Names_rgb.Green][Names_colors.White] = verde;
+        //valueColors[Names_rgb.Green][Names_colors.Black] = getValueFromPercentage(87, verde);
+        valueColors[Names_rgb.Green][Names_colors.Brown] = getValueFromPercentage(12, verde);
+        valueColors[Names_rgb.Green][Names_colors.Red] = getValueFromPercentage(12, verde);
+        valueColors[Names_rgb.Green][Names_colors.Green] = getValueFromPercentage(41, verde);
+        valueColors[Names_rgb.Green][Names_colors.Blue] = getValueFromPercentage(35, verde);
+        valueColors[Names_rgb.Green][Names_colors.Violet] = getValueFromPercentage(15, verde);
+        valueColors[Names_rgb.Green][Names_colors.Yellow] = getValueFromPercentage(95, verde);
+        valueColors[Names_rgb.Green][Names_colors.Gray] = getValueFromPercentage(27, verde);
 
+        valueColors[Names_rgb.Blue][Names_colors.White] = azul;
+        //valueColors[Names_rgb.Blue][Names_colors.Black] = getValueFromPercentage(87, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Brown] = getValueFromPercentage(14, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Red] = getValueFromPercentage(14, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Green] = getValueFromPercentage(16, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Blue] = getValueFromPercentage(60, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Violet] = getValueFromPercentage(23, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Yellow] = getValueFromPercentage(42, azul);
+        valueColors[Names_rgb.Blue][Names_colors.Gray] = getValueFromPercentage(21, azul);
     }
 }
 
