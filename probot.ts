@@ -1287,6 +1287,188 @@ namespace probots {
         valueColors[Names_rgb.Blue][Names_colors.Yellow] = getValueFromPercentage(42, azul);
         valueColors[Names_rgb.Blue][Names_colors.Gray] = getValueFromPercentage(21, azul);
     }
+
+
+
+
+    const ADDR = 0x39
+    const APDS9960_RAM = 0x00
+    const APDS9960_ENABLE = 0x80
+    const APDS9960_ATIME = 0x81
+    const APDS9960_WTIME = 0x83
+    const APDS9960_AILTIL = 0x84
+    const APDS9960_AILTH = 0x85
+    const APDS9960_AIHTL = 0x86
+    const APDS9960_AIHTH = 0x87
+    const APDS9960_PILT = 0x89
+    const APDS9960_PIHT = 0x8B
+    const APDS9960_PERS = 0x8C
+    const APDS9960_CONFIG1 = 0x8D
+    const APDS9960_PPULSE = 0x8E
+    const APDS9960_CONTROL = 0x8F
+    const APDS9960_CONFIG2 = 0x90
+    const APDS9960_ID = 0x92
+    const APDS9960_STATUS = 0x93
+    const APDS9960_CDATAL = 0x94
+    const APDS9960_CDATAH = 0x95
+    const APDS9960_RDATAL = 0x96
+    const APDS9960_RDATAH = 0x97
+    const APDS9960_GDATAL = 0x98
+    const APDS9960_GDATAH = 0x99
+    const APDS9960_BDATAL = 0x9A
+    const APDS9960_BDATAH = 0x9B
+    const APDS9960_PDATA = 0x9C
+    const APDS9960_POFFSET_UR = 0x9D
+    const APDS9960_POFFSET_DL = 0x9E
+    const APDS9960_CONFIG3 = 0x9F
+    const APDS9960_GPENTH = 0xA0
+    const APDS9960_GEXTH = 0xA1
+    const APDS9960_GCONF1 = 0xA2
+    const APDS9960_GCONF2 = 0xA3
+    const APDS9960_GOFFSET_U = 0xA4
+    const APDS9960_GOFFSET_D = 0xA5
+    const APDS9960_GOFFSET_L = 0xA7
+    const APDS9960_GOFFSET_R = 0xA9
+    const APDS9960_GPULSE = 0xA6
+    const APDS9960_GCONF3 = 0xAA
+    const APDS9960_GCONF4 = 0xAB
+    const APDS9960_GFLVL = 0xAE
+    const APDS9960_GSTATUS = 0xAF
+    const APDS9960_IFORCE = 0xE4
+    const APDS9960_PICLEAR = 0xE5
+    const APDS9960_CICLEAR = 0xE6
+    const APDS9960_AICLEAR = 0xE7
+    const APDS9960_GFIFO_U = 0xFC
+    const APDS9960_GFIFO_D = 0xFD
+    const APDS9960_GFIFO_L = 0xFE
+    const APDS9960_GFIFO_R = 0xFF
+
+    function i2cwrite(addr: number, reg: number, value: number) {
+        let buf = pins.createBuffer(2)
+        buf[0] = reg
+        buf[1] = value
+        pins.i2cWriteBuffer(addr, buf)
+    }
+
+    function i2cread(addr: number, reg: number) {
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+        return val;
+    }
+    
+    function rgb2hue(r: number, g: number, b: number): number {
+        // no float support for pxt ts
+        r = (r * 100) / 255;
+        g = (g * 100) / 255;
+        b = (b * 100) / 255;
+        let max = Math.max(r, Math.max(g, b));
+        let min = Math.min(r, Math.min(g, b));
+        
+        if(min == max) return 0;
+
+        let c = (max - min);
+        let segment;
+        let hue;
+        switch (max) {
+            case r:
+                segment = (g - b) * 100 / c;
+                hue = segment;
+                break;
+            case g:
+                segment = (b - r) * 100 / c;
+                hue = segment + 200;
+                break;
+            case b:
+                segment = (r - g) * 100 / c;
+                hue = segment + 400;
+                break;
+        }
+
+        
+        hue = hue * 60;
+        hue = hue < 0 ? 360 - hue : hue;
+        return hue / 100;
+    }
+
+    //% blockId=apds9960_init block="APDS9960 Init"
+    //% weight=100
+    export function Init(): void {
+        i2cwrite(ADDR, APDS9960_ATIME, 252) // default inte time 4x2.78ms
+        i2cwrite(ADDR, APDS9960_CONTROL, 0x03) // todo: make gain adjustable
+        i2cwrite(ADDR, APDS9960_ENABLE, 0x00) // put everything off
+        i2cwrite(ADDR, APDS9960_GCONF4, 0x00) // disable gesture mode
+        i2cwrite(ADDR, APDS9960_AICLEAR, 0x00) // clear all interrupt
+        // power on
+        i2cwrite(ADDR, APDS9960_ENABLE, 0x01) // clear all interrupt
+        let tmp = i2cread(ADDR, APDS9960_ENABLE) | 0x2;
+        i2cwrite(ADDR, APDS9960_ENABLE, tmp);
+    }
+    /**
+     * Gets APDS9960 CHIP ID
+     * It should return 0xAB or 171
+     */
+    //% blockId=apds9960_getid block="ID"
+    //% weight=99
+    export function id(): number {
+        let chipid = i2cread(ADDR, APDS9960_ID);
+        return chipid;
+    }
+    // blockId=apds9960_colormode block="APDS9960 Color Mode"
+    // weight=98
+    export function ColorMode(): void {
+        let tmp = i2cread(ADDR, APDS9960_ENABLE) | 0x2;
+        i2cwrite(ADDR, APDS9960_ENABLE, tmp);
+    }
+    //% blockId=apds9960_readcolor block="APDS9960 Get Color"
+    //% weight=98
+    export function ReadColor(): number {
+        let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        while(!tmp){
+            basic.pause(5);
+            tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        }
+        let c = i2cread(ADDR, APDS9960_CDATAL) + i2cread(ADDR, APDS9960_CDATAH)*256;
+        let r = i2cread(ADDR, APDS9960_RDATAL) + i2cread(ADDR, APDS9960_RDATAH)*256;
+        let g = i2cread(ADDR, APDS9960_GDATAL) + i2cread(ADDR, APDS9960_GDATAH)*256;
+        let b = i2cread(ADDR, APDS9960_BDATAL) + i2cread(ADDR, APDS9960_BDATAH)*256;
+        // map to rgb based on clear channel
+        let avg = c/3;
+        r = r*255/avg;
+        g = g*255/avg;
+        b = b*255/avg;
+        let hue = rgb2hue(r,g,b);
+        return hue
+    }
+
+    //% blockId=apds9960_readcolor2 block="APDS9960 Get Color String"
+    //% weight=98
+    export function ReadColor2(): string {
+        let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        while(!tmp){
+            basic.pause(5);
+            tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        }
+
+        let r = i2cread(ADDR, APDS9960_RDATAL);
+        let g = i2cread(ADDR, APDS9960_GDATAL);
+        let b = i2cread(ADDR, APDS9960_BDATAL);
+        let a = i2cread(ADDR, APDS9960_CDATAL);
+
+        let max = Math.max(r, Math.max(g, b));
+
+      /* switch(max){
+            case r: return "Rojo"; break;
+            case g: return "Verde"; break;
+            case b: return "Azul"; break;
+            default: return "none"; break;
+        }*/
+
+        return "CL: " + i2cread(ADDR, APDS9960_CDATAL) + 
+                " RL: " + i2cread(ADDR, APDS9960_RDATAL) +
+                " GL: " + i2cread(ADDR, APDS9960_GDATAL) +
+                " BL: " + i2cread(ADDR, APDS9960_BDATAL);
+        
+    }
 }
 
 
