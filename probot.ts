@@ -1469,6 +1469,61 @@ namespace probots {
                 " BL: " + i2cread(ADDR, APDS9960_BDATAL);
         
     }
+
+    //% blockId=apds9960_readcolors32 block="APDS9960 Get Color Strissng 33"
+    //% weight=98
+    export function hslToString(): string {
+        let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        while(!tmp){
+            basic.pause(5);
+            tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+        }
+        return rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL)) + " C: " + i2cread(ADDR, APDS9960_RDATAL);
+
+    }
+
+
+    function rgbToHsl(red: number, green: number, blue: number): string{
+
+        red = red / 255;
+        green = green / 255;
+        blue = blue / 255;
+
+        let max = Math.max(red, Math.max(green, blue));
+        let min = Math.min(red, Math.min(green, blue));
+        let c = (max - min);
+        let h, s, l = (max + min) / 2;
+        
+        if(min == max){
+            h = s = 0;
+
+        return "H: "+h+" S: "+s+" L: "+l;
+        }
+
+
+
+        s = l > 0.5 ? c / (2 - max - min) : c / (max + min);
+
+        switch(max) {
+            case red: 
+                h = (green - blue) / c + (green < blue ? 6 : 0) ;
+                break;
+            case green: 
+                h = (blue - red) / c + 2;
+                break;
+            case blue: 
+                h = (red- green) / c + 4;
+                break;
+        }
+        h *= 60;
+        h = h < 0 ? h + 360 : h;
+        s *= 100;
+        l *= 100;
+        h = Math.round(h);
+        s = Math.round(s);
+        l = Math.round(l);
+        return "H: "+h+" S: "+s+" L: "+l;
+        }
 }
 
 
