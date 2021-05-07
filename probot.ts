@@ -1470,8 +1470,8 @@ namespace probots {
         
     }
 
-    //% blockId=apds9960_readcolors32 block="APDS9960 Get Color Strissng 33"
-    //% weight=98
+    // blockId=apds9960_readcolors32 block="APDS9960 Get Color Strissng 33"
+    // weight=98
     export function hslToString(): string {
         let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
         while(!tmp){
@@ -1497,7 +1497,7 @@ namespace probots {
         if(min == max){
             h = s = 0;
 
-        return "H: "+h+" S: "+s+" L: "+l;
+        return h+"e"+s+"e"+l;
         }
 
 
@@ -1522,7 +1522,42 @@ namespace probots {
         h = Math.round(h);
         s = Math.round(s);
         l = Math.round(l);
-        return "H: "+h+" S: "+s+" L: "+l;
+        return h+"e"+s+"e"+l;
+        }
+
+        //% blockId=apds9960_leerColores block="APDS9960 Obtener Color Texto"
+        //% weight=98
+        export function getColorHSL(): string
+        {
+            let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+            while(!tmp){
+                basic.pause(5);
+                tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+            }
+            let hsl = rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
+            let hsl_ = hsl.split("e");
+            let h = 0, s = 0, l = 0;
+            h = +hsl_[0];
+            s = +hsl_[1];
+            l = +hsl_[2];
+            if(l < 10) return "Negro";
+            if(l < 15 && s < 20) return "Gris";
+            //165 40 70
+            if(l < 75 && l > 65 && s < 45 && s > 35 && h < 170 && h > 160) return "Amarillo";
+            //221 45 77
+            if(l < 82 && l > 72 && s < 50 && s > 40 && h < 226 && h > 216) return "Blanco";
+            //350 40 50
+            if(l < 55 && l > 45 && s < 45 && s > 35 && h < 345 && h > 355) return "Rojo";
+            //157 30 35
+            if(l < 40 && l > 30 && s < 35 && s > 25 && h < 162 && h > 152) return "Verde";
+            //210 60 60
+            if(l < 65 && l > 55 && s < 65 && s > 55 && h < 215 && h > 205) return "Azul";
+            //355 15 22
+            if(l < 27 && l > 17 && s < 20 && s > 10 && h < 360 && h > 350) return "Marron";
+            //340 25 40
+            if(l < 45 && l > 35 && s < 30 && s > 20 && h < 345 && h > 335) return "Violeta";
+
+            return "Desconocido";
         }
 }
 
