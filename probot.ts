@@ -1201,7 +1201,7 @@ namespace probots {
 
     //% blockId=apds9960_init block="Init Color Sensor"
     //% group="Sensors"
-    export function Init(): void {
+    export function initColorSensor(): void {
         i2cwrite(ADDR, APDS9960_ATIME, 252) // default inte time 4x2.78ms
         i2cwrite(ADDR, APDS9960_CONTROL, 0x03) // todo: make gain adjustable
         i2cwrite(ADDR, APDS9960_ENABLE, 0x00) // put everything off
