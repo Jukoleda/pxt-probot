@@ -10,6 +10,7 @@ enum conn {
     CON8//p15 p11
 };
 
+
 enum Names_rgb {
     //% block="Red"
     Red = 0,
@@ -1115,103 +1116,12 @@ namespace probots {
         return
     }
 
-  
-
-    /*
-     * 
-     * RGB LED
-     * 
-     */
-    //% block="Get color RGB %typeColor=Names_rgb color %color=Names_colors"
-    //% group="Sensors"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function getColorValue(typeColor: Names_rgb, color: Names_colors): number {
-        return valueColors[typeColor][color];
-    }
-
-
     function isInRange(toEval: number, centralValue: number, offset: number): boolean{
         return ((toEval < centralValue + offset) && (toEval > centralValue - offset));
     }
 
-    function redLayer(toEval: number): number {
-
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Yellow], 3)) return 6;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.White], 3)) return 0;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Red], 3)) return 2;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Violet], 3)) return 5;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Brown], 3)) return 1;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Gray], 3)) return 7;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Blue], 3)) return 4;
-        if(isInRange(toEval, valueColors[Names_rgb.Red][Names_colors.Green], 3)) return 3;
-        if(toEval < valueColors[Names_rgb.Red][Names_colors.Green] - 3) return 8;
-        return 9;
-    }
-     function greenLayer(toEval: number): number {
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.White], 3)) return 0;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Yellow], 3)) return 6;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Green], 3)) return 3;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Blue], 3)) return 4;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Gray], 3)) return 7;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Red], 3)) return 2;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Violet], 3)) return 5;
-        if(isInRange(toEval, valueColors[Names_rgb.Green][Names_colors.Brown], 3)) return 1;
-        if(toEval < valueColors[Names_rgb.Green][Names_colors.Brown] - 3) return 8;
-        return 9;
-    }
-
-    function blueLayer(toEval: number): number {
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.White], 3)) return 0;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Blue], 3)) return 4;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Yellow], 3)) return 6;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Gray], 3)) return 7;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Violet], 3)) return 5;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Red], 3)) return 2;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Green], 3)) return 3;
-        if(isInRange(toEval, valueColors[Names_rgb.Blue][Names_colors.Brown], 3)) return 1;
-        if(toEval < valueColors[Names_rgb.Blue][Names_colors.Brown] - 3) return 8;
-        return 9;
-    }
-
-/*
-     * 
-     * RGB LED
-     * 
-     */
-    //% block="Get color"
-    //% group="Sensors"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function getColor(): string {
-        rgb_led_time(Colors_rgb.Red, 2500);
-        let toEvalRed = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
-        
-        rgb_led_time(Colors_rgb.Green, 2500);
-        let toEvalGreen = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
-        
-        rgb_led_time(Colors_rgb.Blue, 2500);
-        let toEvalBlue = sensorLuz_cantidad(10, probots.conexiones_ret(conn.CON2))
-        
-        rgb_led(Colors_rgb.Black);
-        
-        let red = redLayer(toEvalRed);
-        let green = greenLayer(toEvalGreen);
-        let blue = blueLayer(toEvalBlue);
 
 
-        if(red == green && red == blue)
-        return getColorString(red);
-        
-        if(red == green || red == blue)
-        return getColorString(red);
-
-        if(green == red || green == blue)
-        return getColorString(green);
-
-        if(blue == green || blue == red)
-        return getColorString(blue);
-
-        return "U";
-    }
 
     function getColorString(color: number): string{
         switch(color){
@@ -1227,121 +1137,20 @@ namespace probots {
             default: return "N"; break;
         }
     }
-  /*
-     * 
-     * RGB LED
-     * 
-     */
-    //% block="Set default colors values"
-    //% group="Sensors"
-    // nota* cada conexion tiene dos pines en este caso se lee el de uno solo
-    export function setDefaultColorSensorValues(){
-        //porcentajes rojos
-        //100, 87, 70, 30, 15, 14, 12, 8
-        rgb_led_time(Colors_rgb.Red, 2500);
-        let rojo = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
-        
+  
 
-        //porcentajes verdes
-        //100, 84, 40, 38, 20, 14, 14, 12
-        rgb_led_time(Colors_rgb.Green, 2500);
-        let verde = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
-        
-        //porcentajes azules
-        //100, 61, 31, 21, 20, 16, 16, 15
-        rgb_led_time(Colors_rgb.Blue, 2500);
-        let azul = sensorLuz_cantidad(10, conexiones_ret(conn.CON2));
-        
-        function getValueFromPercentage(percentage: number, topValue: number){
-            return (percentage / 100) * topValue;
-        }
-        rgb_led(Colors_rgb.Black);
+    const ADDR = 0x39;
+    const APDS9960_ENABLE = 0x80;
+    const APDS9960_ATIME = 0x81;
+    const APDS9960_CONTROL = 0x8F;
+    const APDS9960_STATUS = 0x93;
+    const APDS9960_CDATAL = 0x94;
+    const APDS9960_RDATAL = 0x96;
+    const APDS9960_GDATAL = 0x98;
+    const APDS9960_BDATAL = 0x9A;
+    const APDS9960_GCONF4 = 0xAB;
+    const APDS9960_AICLEAR = 0xE7;
 
-        valueColors[Names_rgb.Red][Names_colors.White] = rojo;
-        //valueColors[Names_rgb.Red][Names_colors.Black] = getValueFromPercentage(87, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Brown] = getValueFromPercentage(14, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Red] = getValueFromPercentage(63, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Green] = getValueFromPercentage(8, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Blue] = getValueFromPercentage(9, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Violet] = getValueFromPercentage(29, rojo);
-        valueColors[Names_rgb.Red][Names_colors.Yellow] = rojo = (rojo * 100) / 80;
-        valueColors[Names_rgb.Red][Names_colors.Gray] = getValueFromPercentage(13, rojo);
-
-        valueColors[Names_rgb.Green][Names_colors.White] = verde;
-        //valueColors[Names_rgb.Green][Names_colors.Black] = getValueFromPercentage(87, verde);
-        valueColors[Names_rgb.Green][Names_colors.Brown] = getValueFromPercentage(12, verde);
-        valueColors[Names_rgb.Green][Names_colors.Red] = getValueFromPercentage(12, verde);
-        valueColors[Names_rgb.Green][Names_colors.Green] = getValueFromPercentage(41, verde);
-        valueColors[Names_rgb.Green][Names_colors.Blue] = getValueFromPercentage(35, verde);
-        valueColors[Names_rgb.Green][Names_colors.Violet] = getValueFromPercentage(15, verde);
-        valueColors[Names_rgb.Green][Names_colors.Yellow] = getValueFromPercentage(95, verde);
-        valueColors[Names_rgb.Green][Names_colors.Gray] = getValueFromPercentage(27, verde);
-
-        valueColors[Names_rgb.Blue][Names_colors.White] = azul;
-        //valueColors[Names_rgb.Blue][Names_colors.Black] = getValueFromPercentage(87, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Brown] = getValueFromPercentage(14, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Red] = getValueFromPercentage(14, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Green] = getValueFromPercentage(16, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Blue] = getValueFromPercentage(60, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Violet] = getValueFromPercentage(23, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Yellow] = getValueFromPercentage(42, azul);
-        valueColors[Names_rgb.Blue][Names_colors.Gray] = getValueFromPercentage(21, azul);
-    }
-
-
-
-
-    const ADDR = 0x39
-    const APDS9960_RAM = 0x00
-    const APDS9960_ENABLE = 0x80
-    const APDS9960_ATIME = 0x81
-    const APDS9960_WTIME = 0x83
-    const APDS9960_AILTIL = 0x84
-    const APDS9960_AILTH = 0x85
-    const APDS9960_AIHTL = 0x86
-    const APDS9960_AIHTH = 0x87
-    const APDS9960_PILT = 0x89
-    const APDS9960_PIHT = 0x8B
-    const APDS9960_PERS = 0x8C
-    const APDS9960_CONFIG1 = 0x8D
-    const APDS9960_PPULSE = 0x8E
-    const APDS9960_CONTROL = 0x8F
-    const APDS9960_CONFIG2 = 0x90
-    const APDS9960_ID = 0x92
-    const APDS9960_STATUS = 0x93
-    const APDS9960_CDATAL = 0x94
-    const APDS9960_CDATAH = 0x95
-    const APDS9960_RDATAL = 0x96
-    const APDS9960_RDATAH = 0x97
-    const APDS9960_GDATAL = 0x98
-    const APDS9960_GDATAH = 0x99
-    const APDS9960_BDATAL = 0x9A
-    const APDS9960_BDATAH = 0x9B
-    const APDS9960_PDATA = 0x9C
-    const APDS9960_POFFSET_UR = 0x9D
-    const APDS9960_POFFSET_DL = 0x9E
-    const APDS9960_CONFIG3 = 0x9F
-    const APDS9960_GPENTH = 0xA0
-    const APDS9960_GEXTH = 0xA1
-    const APDS9960_GCONF1 = 0xA2
-    const APDS9960_GCONF2 = 0xA3
-    const APDS9960_GOFFSET_U = 0xA4
-    const APDS9960_GOFFSET_D = 0xA5
-    const APDS9960_GOFFSET_L = 0xA7
-    const APDS9960_GOFFSET_R = 0xA9
-    const APDS9960_GPULSE = 0xA6
-    const APDS9960_GCONF3 = 0xAA
-    const APDS9960_GCONF4 = 0xAB
-    const APDS9960_GFLVL = 0xAE
-    const APDS9960_GSTATUS = 0xAF
-    const APDS9960_IFORCE = 0xE4
-    const APDS9960_PICLEAR = 0xE5
-    const APDS9960_CICLEAR = 0xE6
-    const APDS9960_AICLEAR = 0xE7
-    const APDS9960_GFIFO_U = 0xFC
-    const APDS9960_GFIFO_D = 0xFD
-    const APDS9960_GFIFO_L = 0xFE
-    const APDS9960_GFIFO_R = 0xFF
 
     function i2cwrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
@@ -1390,8 +1199,8 @@ namespace probots {
         return hue / 100;
     }
 
-    //% blockId=apds9960_init block="APDS9960 Init"
-    //% weight=100
+    //% blockId=apds9960_init block="Init Color Sensor"
+    //% group="Sensors"
     export function Init(): void {
         i2cwrite(ADDR, APDS9960_ATIME, 252) // default inte time 4x2.78ms
         i2cwrite(ADDR, APDS9960_CONTROL, 0x03) // todo: make gain adjustable
@@ -1403,75 +1212,9 @@ namespace probots {
         let tmp = i2cread(ADDR, APDS9960_ENABLE) | 0x2;
         i2cwrite(ADDR, APDS9960_ENABLE, tmp);
     }
-    /**
-     * Gets APDS9960 CHIP ID
-     * It should return 0xAB or 171
-     */
-    //% blockId=apds9960_getid block="ID"
-    //% weight=99
-    export function id(): number {
-        let chipid = i2cread(ADDR, APDS9960_ID);
-        return chipid;
-    }
-    // blockId=apds9960_colormode block="APDS9960 Color Mode"
-    // weight=98
-    export function ColorMode(): void {
-        let tmp = i2cread(ADDR, APDS9960_ENABLE) | 0x2;
-        i2cwrite(ADDR, APDS9960_ENABLE, tmp);
-    }
-    //% blockId=apds9960_readcolor block="APDS9960 Get Color"
-    //% weight=98
-    export function ReadColor(): number {
-        let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
-        while(!tmp){
-            basic.pause(5);
-            tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
-        }
-        let c = i2cread(ADDR, APDS9960_CDATAL) + i2cread(ADDR, APDS9960_CDATAH)*256;
-        let r = i2cread(ADDR, APDS9960_RDATAL) + i2cread(ADDR, APDS9960_RDATAH)*256;
-        let g = i2cread(ADDR, APDS9960_GDATAL) + i2cread(ADDR, APDS9960_GDATAH)*256;
-        let b = i2cread(ADDR, APDS9960_BDATAL) + i2cread(ADDR, APDS9960_BDATAH)*256;
-        // map to rgb based on clear channel
-        let avg = c/3;
-        r = r*255/avg;
-        g = g*255/avg;
-        b = b*255/avg;
-        let hue = rgb2hue(r,g,b);
-        return hue
-    }
 
-    //% blockId=apds9960_readcolor2 block="APDS9960 Get Color String"
-    //% weight=98
-    export function ReadColor2(): string {
-        let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
-        while(!tmp){
-            basic.pause(5);
-            tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
-        }
 
-        let r = i2cread(ADDR, APDS9960_RDATAL);
-        let g = i2cread(ADDR, APDS9960_GDATAL);
-        let b = i2cread(ADDR, APDS9960_BDATAL);
-        let a = i2cread(ADDR, APDS9960_CDATAL);
 
-        let max = Math.max(r, Math.max(g, b));
-
-      /* switch(max){
-            case r: return "Rojo"; break;
-            case g: return "Verde"; break;
-            case b: return "Azul"; break;
-            default: return "none"; break;
-        }*/
-
-        return "CL: " + i2cread(ADDR, APDS9960_CDATAL) + 
-                " RL: " + i2cread(ADDR, APDS9960_RDATAL) +
-                " GL: " + i2cread(ADDR, APDS9960_GDATAL) +
-                " BL: " + i2cread(ADDR, APDS9960_BDATAL);
-        
-    }
-
-    // blockId=apds9960_readcolors32 block="APDS9960 Get Color Strissng 33"
-    // weight=98
     export function hslToString(): string {
         let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
         while(!tmp){
@@ -1525,8 +1268,8 @@ namespace probots {
         return h+"e"+s+"e"+l;
         }
 
-        //% blockId=apds9960_leerColores block="APDS9960 Obtener Color Texto"
-        //% weight=98
+        // blockId=apds9960_leerColores block="APDS9960 Obtener Color Texto"
+        // weight=98
         export function getColorHSL(): string
         {
             let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
@@ -1541,24 +1284,70 @@ namespace probots {
             s = +hsl_[1];
             l = +hsl_[2];
             if(l < 10) return "Negro";
-            if(l < 15 && s < 20) return "Gris";
             //165 40 70
-            if(l < 75 && l > 65 && s < 45 && s > 35 && h < 170 && h > 160) return "Amarillo";
+            if(l < 75 && l > 35 && s < 45 && s > 28 && h < 170 && h > 0) return "Amarillo";
             //221 45 77
-            if(l < 82 && l > 72 && s < 50 && s > 40 && h < 226 && h > 216) return "Blanco";
+            if(l < 82 && l > 60 && s < 50 && s > 30 && h < 226 && h > 208) return "Blanco";
             //350 40 50
-            if(l < 55 && l > 45 && s < 45 && s > 35 && h < 345 && h > 355) return "Rojo";
+            if(l < 55 && l > 18 && s < 45 && s > 35 && h < 355 && h > 340) return "Rojo";
             //157 30 35
-            if(l < 40 && l > 30 && s < 35 && s > 25 && h < 162 && h > 152) return "Verde";
+            if(l < 40 && l > 10 && s < 40 && s > 25 && h < 170 && h > 152) return "Verde";
             //210 60 60
-            if(l < 65 && l > 55 && s < 65 && s > 55 && h < 215 && h > 205) return "Azul";
+            if(l < 65 && l > 20 && s < 65 && s > 48 && h < 220 && h > 200) return "Azul";
             //355 15 22
-            if(l < 27 && l > 17 && s < 20 && s > 10 && h < 360 && h > 350) return "Marron";
+            if(l < 27 && l > 0 && s < 20 && s > 5 && h < 360 && h > 330) return "Marron";
             //340 25 40
-            if(l < 45 && l > 35 && s < 30 && s > 20 && h < 345 && h > 335) return "Violeta";
+            if(l < 45 && l > 10 && s < 30 && s > 20 && h < 345 && h > 320) return "Violeta";
 
+            if(l < 15 && s < 20) return "Gris";
             return "Desconocido";
         }
+
+        //% blockId=apds9960_readColor block="Read Color"
+        //% group="Sensors"
+        export function getSensedColorValue(): Names_colors
+        {
+            let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+            while(!tmp){
+                basic.pause(5);
+                tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
+            }
+            let hsl = rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
+            let hsl_ = hsl.split("e");
+            let h = 0, s = 0, l = 0;
+            h = +hsl_[0];
+            s = +hsl_[1];
+            l = +hsl_[2];
+            if(l < 75 && l > 35 && s < 45 && s > 28 && h < 170 && h > 0) return Names_colors.Yellow;
+            if(l < 82 && l > 60 && s < 50 && s > 30 && h < 226 && h > 208) return Names_colors.White;
+            if(l < 55 && l > 18 && s < 45 && s > 35 && h < 355 && h > 340) return Names_colors.Red;
+            if(l < 40 && l > 10 && s < 40 && s > 25 && h < 170 && h > 152) return Names_colors.Green;
+            if(l < 65 && l > 20 && s < 65 && s > 48 && h < 220 && h > 200) return Names_colors.Blue;
+            if(l < 27 && l > 0 && s < 20 && s > 5 && h < 360 && h > 330) return Names_colors.Brown;
+            if(l < 45 && l > 10 && s < 30 && s > 20 && h < 345 && h > 320) return Names_colors.Violet;
+            if(l < 15 && s < 20) return Names_colors.Gray;
+            return Names_colors.Black;
+            
+        }
+
+    //% block="%col"
+    //% blockId="colors_ret"
+    //% group="Miscellaneous"
+    export function colors_ret(col: Names_colors): any {
+        switch(col)
+        {
+            case Names_colors.White: return Names_colors.White; break;
+            case Names_colors.Red: return Names_colors.Red; break;
+            case Names_colors.Blue: return Names_colors.Blue; break;
+            case Names_colors.Green: return Names_colors.Green; break;
+            case Names_colors.Yellow: return Names_colors.Yellow; break;
+            case Names_colors.Brown: return Names_colors.Brown; break;
+            case Names_colors.Gray: return Names_colors.Gray; break;
+            case Names_colors.Violet: return Names_colors.Violet; break;
+            default: return Names_colors.Black; break;
+        }
+    }
+
 }
 
 
