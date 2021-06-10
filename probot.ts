@@ -1303,7 +1303,7 @@ namespace probots {
             return "Desconocido";
         }
 
-        //% blockId=apds9960_readColor block="Read Color"
+        //% blockId=apds9960_readColor block="Read Color (I2C)"
         //% group="Sensors"
         export function getSensedColorValue(): Names_colors
         {
