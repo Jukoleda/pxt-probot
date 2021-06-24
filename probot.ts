@@ -1312,20 +1312,23 @@ namespace probots {
                 basic.pause(5);
                 tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
             }
+            
+            //return "R: "+i2cread(ADDR, APDS9960_RDATAL)+", G: "+i2cread(ADDR, APDS9960_GDATAL)+", B: "+i2cread(ADDR, APDS9960_BDATAL);
+            //return rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
             let hsl = rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
             let hsl_ = hsl.split("e");
             let h = 0, s = 0, l = 0;
             h = +hsl_[0];
             s = +hsl_[1];
             l = +hsl_[2];
-            if(l < 75 && l > 35 && s < 45 && s > 28 && h < 170 && h > 0) return Names_colors.Yellow;
-            if(l < 82 && l > 60 && s < 50 && s > 30 && h < 226 && h > 208) return Names_colors.White;
-            if(l < 55 && l > 18 && s < 45 && s > 35 && h < 355 && h > 340) return Names_colors.Red;
-            if(l < 40 && l > 10 && s < 40 && s > 25 && h < 170 && h > 152) return Names_colors.Green;
-            if(l < 65 && l > 20 && s < 65 && s > 48 && h < 220 && h > 200) return Names_colors.Blue;
-            if(l < 27 && l > 0 && s < 20 && s > 5 && h < 360 && h > 330) return Names_colors.Brown;
-            if(l < 45 && l > 10 && s < 30 && s > 20 && h < 345 && h > 320) return Names_colors.Violet;
-            if(l < 15 && s < 20) return Names_colors.Gray;
+            if(l < 35 && l > 4 && s < 30 && s > 13 && h < 85 && h > 25) return Names_colors.Yellow;
+            if(l < 55 && l > 4 && s < 25 && s > 4 && h < 350 && h > 190) return Names_colors.White;
+            if(l < 50 && l > 4 && s < 60 && s > 35 && h < 355 && h > 340) return Names_colors.Red;
+            if(l < 45 && l > 4 && s < 30 && s > 5 && h < 160 && h > 115) return Names_colors.Green;
+            if(l < 25 && l > 0 && s < 45 && s > 18 && h < 245 && h > 209) return Names_colors.Blue;
+            if(l < 50 && l > 4 && s < 31 && s > 20) return Names_colors.Brown;
+            if(l < 37 && l > 8 && s < 45 && s > 35 && h < 345 && h > 339) return Names_colors.Violet;
+            if(l < 15 && s < 50) return Names_colors.Gray;
             return Names_colors.Black;
             
         }
