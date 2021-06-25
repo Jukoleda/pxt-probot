@@ -56,6 +56,7 @@
     "Names_colors.Gray|block": "Gris",
     "Names_colors.Yellow|block": "Amarillo",
     "Names_colors.Black|block": "Negro",
+    "Names_colors.Other|block": "Otro",
     "probots|block": "Probots",
     "{id:category}Probots": "Probots",
     "{id:category}Ws2812bj": "Ws2812bj",
