@@ -38,7 +38,9 @@ enum Names_colors {
     //% block="Gray"
     Gray,
     //% block="Black"
-    Black
+    Black,
+    //% block="Other"
+    Other
 }
 
 let valueColors: number [][] = [
@@ -1298,7 +1300,6 @@ namespace probots {
             if(l < 27 && l > 0 && s < 20 && s > 5 && h < 360 && h > 330) return "Marron";
             //340 25 40
             if(l < 45 && l > 10 && s < 30 && s > 20 && h < 345 && h > 320) return "Violeta";
-
             if(l < 15 && s < 20) return "Gris";
             return "Desconocido";
         }
@@ -1324,13 +1325,13 @@ namespace probots {
             if(l < 35 && l > 4 && s < 30 && s > 13 && h < 85 && h > 25) return Names_colors.Yellow;
             if(l < 55 && l > 4 && s < 25 && s > 4 && h < 350 && h > 190) return Names_colors.White;
             if(l < 50 && l > 4 && s < 60 && s > 35 && h < 355 && h > 340) return Names_colors.Red;
-            if(l < 45 && l > 4 && s < 30 && s > 5 && h < 160 && h > 115) return Names_colors.Green;
+            if(l < 45 && l > 4 && s < 40 && s > 15 && h < 165 && h > 130) return Names_colors.Green;
             if(l < 25 && l > 0 && s < 45 && s > 18 && h < 245 && h > 209) return Names_colors.Blue;
             if(l < 50 && l > 4 && s < 31 && s > 20) return Names_colors.Brown;
             if(l < 37 && l > 8 && s < 45 && s > 35 && h < 345 && h > 339) return Names_colors.Violet;
-            if(l < 15 && s < 50) return Names_colors.Gray;
-            return Names_colors.Black;
-            
+            if(l < 10) return Names_colors.Black;
+            if(l < 25) return Names_colors.Gray;
+            return Names_colors.Other;
         }
 
     //% block="%col"
