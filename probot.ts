@@ -1201,9 +1201,24 @@ namespace probots {
         return hue / 100;
     }
 
-    //% blockId=apds9960_init block="Init Color Sensor"
+    //% blockId=apds9960_init block="Init Color Sensor on %pin=conexiones_ret"
     //% group="Sensors"
-    export function initColorSensor(): void {
+    export function initColorSensor(pin: any): void {
+        //init ws2812b rgb led
+        let strip = new Strip();
+        strip.buf = pins.createBuffer(3);
+        strip.start = 0;
+        strip._length = 1;
+        strip._mode = NeoPixelMode.RGB || NeoPixelMode.RGB;
+        strip._matrixWidth = 0;
+        strip.setBrightness(128);
+        strip.setPin(pin.P0);
+
+        setAllRGB(strip, Colors.White >> 0);
+        strip.show();
+
+
+
         i2cwrite(ADDR, APDS9960_ATIME, 252) // default inte time 4x2.78ms
         i2cwrite(ADDR, APDS9960_CONTROL, 0x03) // todo: make gain adjustable
         i2cwrite(ADDR, APDS9960_ENABLE, 0x00) // put everything off
