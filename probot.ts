@@ -1201,9 +1201,9 @@ namespace probots {
         return hue / 100;
     }
 
-    //% blockId=apds9960_init block="Init Color Sensor on %pin=conexiones_ret $luz"
+    //% blockId=apds9960_init block="Init Color Sensor on %pin=conexiones_ret"
     //% group="Sensors"
-    export function initColorSensor(pin: any, luz: number): void {
+    export function initColorSensor(pin: any): void {
         //init ws2812b rgb led
         let strip = new Strip();
         strip.buf = pins.createBuffer(3);
@@ -1211,10 +1211,10 @@ namespace probots {
         strip._length = 1;
         strip._mode = NeoPixelMode.RGB || NeoPixelMode.RGB;
         strip._matrixWidth = 0;
-        strip.setBrightness(luz);
+        strip.setBrightness(32);
         strip.setPin(pin.P0);
 
-        setAllRGB(strip, Colors.White >> 0);
+        setAllRGB(strip, 0xFFFFFF >> 0);
         strip.show();
 
 
@@ -1319,9 +1319,14 @@ namespace probots {
             return "Desconocido";
         }
 
+        function btw(eval: number, min: number, max: number) {
+            if(max < min) return (eval <= min && eval >= max);
+            return (eval <= max && eval >= min);
+        }
+
         //% blockId=apds9960_readColor block="Read Color (I2C)"
         //% group="Sensors"
-        export function getSensedColorValue(): string
+        export function getSensedColorValue(): Names_colors
         {
             let tmp = i2cread(ADDR, APDS9960_STATUS) & 0x1;
             while(!tmp){
@@ -1330,23 +1335,23 @@ namespace probots {
             }
             
             //return "R: "+i2cread(ADDR, APDS9960_RDATAL)+", G: "+i2cread(ADDR, APDS9960_GDATAL)+", B: "+i2cread(ADDR, APDS9960_BDATAL);
-            return rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
+            //return rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
             let hsl = rgbToHsl(i2cread(ADDR, APDS9960_RDATAL), i2cread(ADDR, APDS9960_GDATAL), i2cread(ADDR, APDS9960_BDATAL));
             let hsl_ = hsl.split("e");
             let h = 0, s = 0, l = 0;
             h = +hsl_[0];
             s = +hsl_[1];
             l = +hsl_[2];
-          /*  //if(l < 35 && l > 4 && s < 30 && s > 13 && h < 85 && h > 25) return Names_colors.Yellow;
-            if(l < 55 && l > 30 && s < 25 && s > 15 && h < 80 && h > 70) return Names_colors.White;
-            if(l < 75 && l > 55 && s < 80 && s > 65 && h < 325 && h > 310) return Names_colors.Red;
-            if(l < 25 && l > 15 && s < 50 && s > 40 && h < 300 && h > 280) return Names_colors.Green;
-            if(l < 55 && l > 45 && s < 65 && s > 55 && h < 185 && h > 170) return Names_colors.Blue;
+            if((btw(h, 125, 135) && btw(s, 90 ,101) && btw(l, 45, 55)) || (btw(h, 50, 60) && btw(s, 93, 105) && btw(l, 45, 55))) return Names_colors.Yellow;
+            if(btw(h, 116, 140) && btw(s, 89, 93) && btw(l, 48, 63)) return Names_colors.White;
+            if(btw(l, 50, 60) && btw(s, 44, 67) && btw(h, 320, 335)) return Names_colors.Red;
+            if(btw(l, 25, 60) && btw(s, 45, 70) && btw(h, 185, 197)) return Names_colors.Green;
+            if(btw(l, 36, 47) && btw(s, 50, 60) && btw(h, 129, 157)) return Names_colors.Blue;
             //if(l < 50 && l > 4 && s < 31 && s > 20) return Names_colors.Brown;
             //if(l < 37 && l > 8 && s < 45 && s > 35 && h < 345 && h > 339) return Names_colors.Violet;
-            if(l < 35 && l > 25 && s < 55 && s > 40 && h < 225 && h > 215) return Names_colors.Black;
-            if(l < 90 && l > 80 && s < 100 && s > 80 && h < 310 && h > 300) return Names_colors.Gray;
-            return Names_colors.Other;*/
+            if(btw(l, 20, 25) && btw(s, 36, 44) && btw(h, 215, 225)) return Names_colors.Black;
+            if((btw(s, 80, 105) && btw(l, 60, 75)) || (btw(s, 60, 80) && btw(l, 45, 60))) return Names_colors.Gray;
+            return Names_colors.Other;
         }
 
     //% block="%col"

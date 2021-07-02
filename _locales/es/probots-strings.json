@@ -46,7 +46,7 @@
     "probots.rgb_led|block": "LED RGB en CON 7 mostrar color %color=colores_rgb",
     "probots.rgb_led_time|block": "LED RGB en CON 7 mostrar color %color=colores_rgb por %duracion|ms",
     "probots.getSensedColorValue|block": "Leer color (I2C)",
-    "probots.initColorSensor|block": "Iniciar sensor de color en %pin=conexiones_ret $luz",
+    "probots.initColorSensor|block": "Iniciar sensor de color en %pin=conexiones_ret",
     "Names_colors.White|block": "Blanco",
     "Names_colors.Brown|block": "Marron",
     "Names_colors.Red|block": "Rojo",
