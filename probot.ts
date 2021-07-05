@@ -1342,14 +1342,14 @@ namespace probots {
             h = +hsl_[0];
             s = +hsl_[1];
             l = +hsl_[2];
-            if((btw(h, 125, 135) && btw(s, 90 ,101) && btw(l, 45, 55)) || (btw(h, 50, 60) && btw(s, 93, 105) && btw(l, 45, 55))) return Names_colors.Yellow;
-            if(btw(h, 116, 140) && btw(s, 89, 93) && btw(l, 48, 63)) return Names_colors.White;
+            if((btw(h, 262, 275) && (btw(s, 35, 55) || btw(s, 79, 85)) && btw(l, 84, 95)) || ((btw(h, 125, 135) || (btw(h, 50, 60)) && btw(s, 90, 103) && btw(l, 45, 55)))) return Names_colors.Yellow;
+            if(btw(h, 108, 140) && btw(s, 65, 90) && btw(l, 39, 57)) return Names_colors.White;
             if(btw(l, 50, 60) && btw(s, 44, 67) && btw(h, 320, 335)) return Names_colors.Red;
             if(btw(l, 25, 60) && btw(s, 45, 70) && btw(h, 185, 197)) return Names_colors.Green;
             if(btw(l, 36, 47) && btw(s, 50, 60) && btw(h, 129, 157)) return Names_colors.Blue;
             //if(l < 50 && l > 4 && s < 31 && s > 20) return Names_colors.Brown;
             //if(l < 37 && l > 8 && s < 45 && s > 35 && h < 345 && h > 339) return Names_colors.Violet;
-            if(btw(l, 20, 25) && btw(s, 36, 44) && btw(h, 215, 225)) return Names_colors.Black;
+            if(((btw(l, 20, 33) || btw(l, 54, 62)) && (btw(s, 36, 46) || btw(s, 57, 73)) && btw(h, 215, 225)) || (btw(h, 90, 102) && (btw(s, 69, 73) || btw(s, 55, 65)) && btw(l, 37, 49))) return Names_colors.Black;
             if((btw(s, 80, 105) && btw(l, 60, 75)) || (btw(s, 60, 80) && btw(l, 45, 60))) return Names_colors.Gray;
             return Names_colors.Other;
         }
