@@ -9,12 +9,17 @@
     "files": [
         "README.md",
         "probot.ts",
-        "_locales/es/probots-strings.json"
+        "_locales/es/probots-strings.json",
+        "mednet.ts"
     ],
     "testFiles": [
         "probotest.ts"
     ],
     "public": true,
+    "targetVersions": {
+        "target": "4.0.9",
+        "targetId": "microbit"
+    },
     "supportedTargets": [
         "microbit"
     ],
