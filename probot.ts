@@ -192,30 +192,35 @@ namespace probots {
     }
 
     export class ColorRec {
+        
+        pesos: Weights;
+        data: Dataset[];
+
         init() {
-            this.pesos.i1_h1 = Math.random();
-            this.pesos.i2_h1 = Math.random();
-            this.pesos.i3_h1 = Math.random();
-            this.pesos.bias_h1 = Math.random();
-            this.pesos.i1_h2 = Math.random();
-            this.pesos.i2_h2 = Math.random();
-            this.pesos.i3_h2 = Math.random();
-            this.pesos.bias_h2 = Math.random();
-            this.pesos.i1_h3 = Math.random();
-            this.pesos.i2_h3 = Math.random();
-            this.pesos.i3_h3 = Math.random();
-            this.pesos.bias_h3 = Math.random();
-            this.pesos.h1_o1 = Math.random();
-            this.pesos.h2_o1 = Math.random();
-            this.pesos.h3_o1 = Math.random();
-            this.pesos.bias_o1 = Math.random();
+
+            this.pesos = {
+                i1_h1: Math.random(),
+                i2_h1: Math.random(),
+                i3_h1: Math.random(),
+                bias_h1: Math.random(),
+                i1_h2: Math.random(),
+                i2_h2: Math.random(),
+                i3_h2: Math.random(),
+                bias_h2: Math.random(),
+                i1_h3: Math.random(),
+                i2_h3: Math.random(),
+                i3_h3: Math.random(),
+                bias_h3: Math.random(),
+                h1_o1: Math.random(),
+                h2_o1: Math.random(),
+                h3_o1: Math.random(),
+                bias_o1: Math.random()
+            };
+            
         }
 
         sigmoid(x: number) { return 1 / (1 + Math.exp(-x)) };
         _sigmoid(x: number) { return this.sigmoid(x) * (1 - this.sigmoid(x)) };
-
-        pesos: Weights;
-        data: Dataset[];
         predict(i1: number, i2: number, i3: number) {
             let h1_inputs =
                 this.pesos.i1_h1 * i1 +
@@ -255,11 +260,29 @@ namespace probots {
 
         train() {
             let weight_deltas: Weights;
+            weight_deltas = {
+                i1_h1: 0,
+                i2_h1: 0,
+                i3_h1: 0,
+                bias_h1: 0,
+                i1_h2: 0,
+                i2_h2: 0,
+                i3_h2: 0,
+                bias_h2: 0,
+                i1_h3: 0,
+                i2_h3: 0,
+                i3_h3: 0,
+                bias_h3: 0,
+                h1_o1: 0,
+                h2_o1: 0,
+                h3_o1: 0,
+                bias_o1: 0
+            };
 
             for (let i = 0; i < this.data.length; i++) {
                 let i1 = this.data[i].input[0],
                     i2 = this.data[i].input[1],
-                    i3 = this.data[i].input[3],
+                    i3 = this.data[i].input[2],
                     output = this.data[i].output;
 
                 let h1_inputs =
@@ -345,9 +368,14 @@ namespace probots {
         }
 
         outputResults() {
-
-            this.data.forEach(({ input: [i1, i2, i3], output: y }) =>
-                console.log(`[R:${i1}, G:${i2}, B:${i3}] => ${this.predict(i1, i2, i3)} (expected ${y})`));
+            for(let i = 0; i < this.data.length; i++){
+                let i1 = this.data[i].input[0],
+                    i2 = this.data[i].input[1],
+                    i3 = this.data[i].input[2],
+                    output = this.data[i].output;
+                console.log(`[R:${i1}, G:${i2}, B:${i3}] => ${this.predict(i1, i2, i3)} (expected ${output})`);
+            }
+          
         }
 
         show() {
