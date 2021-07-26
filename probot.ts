@@ -10,7 +10,6 @@ enum conn {
     CON8//p15 p11
 };
 
-
 enum Names_rgb {
     //% block="Red"
     Red = 0,
@@ -1580,9 +1579,9 @@ namespace probots {
             h = +hsl_[0];
             s = +hsl_[1];
             l = +hsl_[2];
-            if((btw(h, 262, 275) && (btw(s, 35, 55) || btw(s, 79, 85)) && btw(l, 84, 95)) || ((btw(h, 125, 135) || (btw(h, 50, 60)) && btw(s, 90, 103) && btw(l, 45, 55)))) return Names_colors.Yellow;
+            if (btw(h, 335, 350) && btw(s, 35, 45) && btw(l, 45, 55)) return Names_colors.Yellow;
             if(btw(h, 108, 140) && btw(s, 65, 90) && btw(l, 39, 57)) return Names_colors.White;
-            if(btw(l, 50, 60) && btw(s, 44, 67) && btw(h, 320, 335)) return Names_colors.Red;
+            if(btw(l, 20, 45) && btw(s, 44, 67) && btw(h, 320, 340)) return Names_colors.Red;
             if(btw(l, 25, 60) && btw(s, 45, 70) && btw(h, 185, 197)) return Names_colors.Green;
             if(btw(l, 36, 47) && btw(s, 50, 60) && btw(h, 129, 157)) return Names_colors.Blue;
             //if(l < 50 && l > 4 && s < 31 && s > 20) return Names_colors.Brown;
